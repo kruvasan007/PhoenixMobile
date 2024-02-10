@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_search">
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.example.phoenixmobile.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search_page" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_mydevice"
+        android:name="com.example.phoenixmobile.ui.device.MyDeviceFragment"
+        android:label="@string/title_mydevice"
+        tools:layout="@layout/fragment_my_device" >
+    </fragment>
+
+</navigation>
