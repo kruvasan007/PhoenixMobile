@@ -26,10 +26,6 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchPageBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.productName
-        searchViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 
