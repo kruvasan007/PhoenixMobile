@@ -6,31 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".ui.device.MyDeviceFragment">
 
-    <TextView
-        android:fontFamily="sans-serif"
-        android:id="@+id/my_device_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
+    <LinearLayout
+        android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="24dp"
-        android:text="My device"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:fontFamily="sans-serif-black"
-        android:id="@+id/device_name"
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginVertical="8dp"
-        android:text="Gen report"
-        android:textColor="@color/black"
-        android:textSize="32sp"
+        android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_device_header" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/my_device_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="My device"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/device_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Gen report"
+            android:textColor="@color/black"
+            android:textSize="32sp" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="wrap_content"
+            app:dividerColor="@color/material_dynamic_neutral10"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="18dp"/>
+    </LinearLayout>
 
 
     <LinearLayout
@@ -38,19 +48,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="32dp"
         android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/device_name">
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
         <TextView
-            android:fontFamily="sans-serif"
             android:id="@+id/condition_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
-            android:padding="8dp"
+            android:fontFamily="sans-serif"
             android:text="Condition"
             android:textColor="@color/black"
             android:textSize="22sp" />
@@ -58,8 +66,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/state_of_device"
@@ -67,8 +74,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:text="Unknown"
+                android:fontFamily="sans-serif-black"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="28sp" />
 
             <TextView
                 android:id="@+id/current_price"
@@ -76,18 +84,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:text="000$"
+                android:fontFamily="sans-serif-black"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="28sp" />
         </RelativeLayout>
 
     </LinearLayout>
 
 
     <TextView
-        android:layout_margin="24dp"
         android:id="@+id/report_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="24dp"
         android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

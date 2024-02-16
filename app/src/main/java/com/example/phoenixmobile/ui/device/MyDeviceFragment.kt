@@ -9,6 +9,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.BatteryManager
 import android.os.Build
@@ -16,6 +18,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.StatFs
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,13 +30,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.phoenixmobile.databinding.FragmentMyDeviceBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 
 
-class MyDeviceFragment : Fragment() {
+class MyDeviceFragment : Fragment(), SensorEventListener {
     private val REQUEST_READ_PHONE_STATE = 1
 
     private lateinit var sensorManager: SensorManager
+    private lateinit var loadingDialog: LoadingDialog;
     private var result: String = ""
 
     private var _binding: FragmentMyDeviceBinding? = null
@@ -43,12 +48,52 @@ class MyDeviceFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val myDeviceViewModel = ViewModelProvider(this).get(MyDeviceViewModel::class.java)
-
         _binding = FragmentMyDeviceBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val phoneModel = Build.MODEL
         binding.deviceName.text = phoneModel
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadingDialog = LoadingDialog(requireActivity())
+        binding.btnGenReport.setOnClickListener {
+            loadingDialog.startLoadingDialog()
+            checkMemory()
+        }
+
+    }
+
+    private fun checkProcessor() {
+        TODO("pro")
+    }
+
+    private fun checkMemory() {
+        loadingDialog.setMessage("Checking memory...")
+
+        val activityManager =
+            context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val memoryInfo = ActivityManager.MemoryInfo()
+        activityManager.getMemoryInfo(memoryInfo);
+        val totalRam = memoryInfo.totalMem / (1024 * 1024 * 1024);
+        val iPath: File = Environment.getDataDirectory()
+        val iStat = StatFs(iPath.path)
+        val iBlockSize = iStat.blockSizeLong
+        val iAvailableBlocks = iStat.availableBlocksLong
+        val iTotalBlocks = iStat.blockCountLong
+        val iAvailableSpace = iAvailableBlocks * iBlockSize / (1024 * 1024 * 1024)
+        val iTotalSpace = iTotalBlocks * iBlockSize / (1024 * 1024 * 1024)
+
+        viewModel.setMemoryParams(totalRam, iTotalSpace, iAvailableSpace);
+
+        Log.d("MEMORY", "$totalRam GB $iTotalSpace TOTAL $iAvailableSpace AVAILABLE \n\n")
+
+        checkBattery()
+    }
+
+    private fun checkBattery() {
+        loadingDialog.setMessage("Checking battery...")
 
         val receiver: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -61,90 +106,85 @@ class MyDeviceFragment : Fragment() {
                     BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE -> "BATTERY OVER VOLTAGE"
                     else -> "UNKNOWN"
                 }
-                result.plus("BATTERY: $status");
+                viewModel.setBatteryParams(status)
+                result += "BATTERY: $statusStr"
+                checkSensors()
+                unregisterForContextMenu(view!!)
             }
         }
         requireContext().registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-
-        return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.btnGenReport.setOnClickListener {
-            result = ""
-            binding.reportText.text = result
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                checkNetworkState()
-                checkDisplayState()
-            }
-            checkOS()
-            checkMemory()
-            checkSensors()
-        }
-
-    }
-
-    private fun checkMemory() {
-        val activityManager = context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        var memoryInfo = ActivityManager.MemoryInfo()
-        activityManager.getMemoryInfo(memoryInfo);
-
-        var totalRam = memoryInfo.totalMem / (1024 * 1024 * 1024);
-
-        val iPath: File = Environment.getDataDirectory()
-        val iStat = StatFs(iPath.path)
-        val iBlockSize = iStat.blockSizeLong
-        val iAvailableBlocks = iStat.availableBlocksLong
-        val iTotalBlocks = iStat.blockCountLong
-        val iAvailableSpace = iAvailableBlocks * iBlockSize / (1024 * 1024 * 1024)
-        val iTotalSpace = iTotalBlocks * iBlockSize / (1024 * 1024 * 1024)
-
-        result +="MEMORY: $totalRam GB $iTotalSpace TOTAL $iAvailableSpace AVAILABLE \n\n"
-
-        binding.reportText.text = result
-    }
 
     private fun checkSensors() {
+        loadingDialog.setMessage("Checking sensors...")
+        //get sensors list
         sensorManager = context?.getSystemService(SENSOR_SERVICE) as SensorManager
-        val deviceSensors: List<Sensor> = sensorManager.getSensorList(Sensor.TYPE_ALL)
-        val dev = deviceSensors[0];
-        result += "SENSORS:  $dev\n\n"
+        // val deviceSensors: List<Sensor> = sensorManager.getSensorList(Sensor.TYPE_GYROSCOPE)
+        //check gyroscope
+        val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+        if (sensor != null) {
+            sensorManager.registerListener(
+                this,
+                sensor,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        } else {
+            Log.d("Sensors", "No gyroscope")
+        }
 
-        binding.reportText.text = result
+        //viewModel.setSensorsParams(deviceSensors)
+
+        checkOS()
     }
 
     private fun checkOS() {
+        loadingDialog.setMessage("Checking OS...")
         val phoneModel = Build.MODEL
         val versionOS = Build.VERSION.RELEASE
         val sdkVersion = Build.VERSION.SDK_INT
         val hardware = Build.HARDWARE;
         val board = Build.BOARD;
 
-        result += "SYSTEM: $versionOS version OS, $sdkVersion sdk, $phoneModel, $hardware hardware, $board board model \n\n"
+        viewModel.setSystemParams(versionOS, sdkVersion, phoneModel, hardware, board)
+
+        Log.d(
+            "SYSTEM",
+            "$versionOS version OS, $sdkVersion sdk, $phoneModel, $hardware hardware, $board board model \n\n"
+        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            checkDisplayState()
+        } else {
+            loadingDialog.dismissDialog()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
     private fun checkDisplayState() {
-        val displayMetrics = activity?.windowManager?.currentWindowMetrics
+        loadingDialog.setMessage("Checking display...")
 
+        val displayMetrics = activity?.windowManager?.currentWindowMetrics
         val screenWidth = displayMetrics!!.bounds.width()
         val screenHeight = displayMetrics.bounds.height()
         val density = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             displayMetrics.density
         } else {
-            null
+            0
         }
-        result += "DISPLAY: width: $screenWidth height: $screenHeight density: $density \n\n"
+        viewModel.setDisplayParams(screenHeight, screenWidth, density.toInt())
+
+        Log.d("DISPLAY", "width: $screenWidth height: $screenHeight density: $density \n\n")
+
+        checkNetworkState()
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
     private fun checkNetworkState() {
+        loadingDialog.setMessage("Checking network...")
         val permissionCheck = ContextCompat.checkSelfPermission(
             requireContext(), Manifest.permission.READ_PHONE_STATE
         )
-
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -154,6 +194,14 @@ class MyDeviceFragment : Fragment() {
         } else {
             val telephonyManager =
                 requireContext().getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
+
+            val level = telephonyManager.signalStrength!!.level
+            viewModel.setNetworkParams(
+                level,
+                telephonyManager.dataState,
+                telephonyManager.simState
+            )
+
             val levelStr = when (telephonyManager.signalStrength?.level) {
                 0 -> "NO_SIGNAL"
 
@@ -179,8 +227,6 @@ class MyDeviceFragment : Fragment() {
 
                 else -> "UNKNOWN"
             }
-
-
             val dataStateStr = when (telephonyManager.dataState) {
                 TelephonyManager.DATA_CONNECTED -> "DATA_CONNECTED"
 
@@ -193,13 +239,25 @@ class MyDeviceFragment : Fragment() {
                 else -> "UNKNOWN"
             }
 
-            result +=  "NETWORK: $levelStr  $dataStateStr $simStateStr\n\n"
+            Log.d("NETWORK", "$levelStr  $dataStateStr $simStateStr\n\n")
 
         }
+
+        loadingDialog.dismissDialog()
+
+        viewModel.pushReport()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        Log.d("AC", event!!.values.get(1).toString())
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        //Log.d("AC", accuracy.)
     }
 }

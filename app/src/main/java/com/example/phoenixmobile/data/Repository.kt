@@ -1,10 +1,14 @@
 package com.example.phoenixmobile.data
 
 import androidx.lifecycle.MutableLiveData
+import com.example.phoenixmobile.App
+import com.example.phoenixmobile.database.ReportDao
+import com.example.phoenixmobile.model.Report
 import com.example.phoenixmobile.retrofit.Common
 import kotlinx.coroutines.*
 
 object Repository {
+    private val reportDao: ReportDao = App.getDatabase()!!.reportDao()
     private val retrofitService = Common.retrofitService
     private var job: Job? = null
     private val loadError = MutableLiveData<String?>()
@@ -12,6 +16,10 @@ object Repository {
 
     val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
+    }
+
+    fun pullReport(report: Report) {
+       // reportDao.insertReport(report)
     }
 
     init {
