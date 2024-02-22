@@ -34,86 +34,70 @@
             android:text="Gen report"
             android:textColor="@color/black"
             android:textSize="32sp" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="18dp"
-            app:dividerColor="@color/material_dynamic_neutral10" />
     </LinearLayout>
 
-
-    <LinearLayout
-        android:id="@+id/about_condition"
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:orientation="vertical"
+        android:layout_marginVertical="12dp"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/report_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        app:cardElevation="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header">
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:strokeColor="@color/material_on_surface_stroke"
+        app:strokeWidth="1dp">
 
-        <TextView
-            android:id="@+id/condition_header"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:fontFamily="sans-serif"
-            android:text="Condition"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/state_of_device"
+                android:id="@+id/header_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:fontFamily="sans-serif-black"
-                android:text="Unknown"
-                android:textColor="@color/black"
-                android:textSize="28sp" />
+                android:text="Report"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/current_price"
+                android:id="@+id/report_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:fontFamily="sans-serif-black"
-                android:text="000$"
-                android:textColor="@color/black"
-                android:textSize="28sp" />
-        </RelativeLayout>
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:text="Text text text"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/black" />
+        </LinearLayout>
 
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/report_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_condition" />
-
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/device_cond_price_list"
+        android:id="@+id/testList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="8dp"
         android:layout_marginVertical="32dp"
-        android:layout_marginBottom="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn_gen_report"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_condition"
+        app:layout_constraintTop_toBottomOf="@+id/header"
         tools:listitem="@layout/check_item" />
 
     <Button

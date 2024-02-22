@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,13 +15,15 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import java.io.IOException
-import java.lang.reflect.InvocationTargetException
+import com.example.phoenixmobile.data.Repository
 
 class NetworkTest : Service() {
+    private var level: Int = -1
+    private var simState: Int = -1
+    private var dataState: Int = -1
+    private var connected = false
     private fun checkConnected() {
         val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        var connected = false
         val permissionCheck = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ContextCompat.checkSelfPermission(
                 applicationContext, Manifest.permission.BLUETOOTH_CONNECT
@@ -31,37 +32,40 @@ class NetworkTest : Service() {
             TODO("VERSION.SDK_INT < S")
         }
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            for (device in mBluetoothAdapter.bondedDevices) {
-                try {
-                    try {
-                        val m = device.javaClass.getMethod(
-                            "createRfcommSocket", *arrayOf<Class<*>?>(
-                                Int::class.javaPrimitiveType
-                            )
-                        )
-                        try {
-                            val bs = m.invoke(device, Integer.valueOf(1)) as BluetoothSocket
-                            bs.connect()
-                            connected = true
-                            Log.d("BLUETOOTH", device.name + " - connected")
-                            break
-                        } catch (e: IOException) {
-                            Log.e("BLUETOOTH", "IOException: " + e.localizedMessage)
-                            Log.d("BLUETOOTH", device.name + " - not connected")
-                        }
-                    } catch (e: IllegalArgumentException) {
-                        Log.e("BLUETOOTH", "IllegalArgumentException: " + e.localizedMessage)
-                    } catch (e: IllegalAccessException) {
-                        Log.e("BLUETOOTH", "IllegalAccessException: " + e.localizedMessage)
-                    } catch (e: InvocationTargetException) {
-                        Log.e("BLUETOOTH", "InvocationTargetException: " + e.localizedMessage)
-                    }
-                } catch (e: SecurityException) {
-                    Log.e("BLUETOOTH", "SecurityException: " + e.localizedMessage)
-                } catch (e: NoSuchMethodException) {
-                    Log.e("BLUETOOTH", "NoSuchMethodException: " + e.localizedMessage)
-                }
+            if (mBluetoothAdapter.isEnabled) {
+                connected = true
             }
+            Log.d("BLUETOOTH", mBluetoothAdapter.bondedDevices.toString())
+            /*try {
+                try {
+                    val m = device.javaClass.getMethod(
+                        "createRfcommSocket", *arrayOf<Class<*>?>(
+                            Int::class.javaPrimitiveType
+                        )
+                    )
+                    try {
+                        val bs = m.invoke(device, Integer.valueOf(1)) as BluetoothSocket
+                        bs.connect()
+                        connected = true
+                        Log.d("BLUETOOTH", device.name + " - connected")
+                        break
+                    } catch (e: IOException) {
+                        Log.e("BLUETOOTH", "IOException: " + e.localizedMessage)
+                        Log.d("BLUETOOTH", device.name + " - not connected")
+                    }
+                } catch (e: IllegalArgumentException) {
+                    Log.e("BLUETOOTH", "IllegalArgumentException: " + e.localizedMessage)
+                } catch (e: IllegalAccessException) {
+                    Log.e("BLUETOOTH", "IllegalAccessException: " + e.localizedMessage)
+                } catch (e: InvocationTargetException) {
+                    Log.e("BLUETOOTH", "InvocationTargetException: " + e.localizedMessage)
+                }
+            } catch (e: SecurityException) {
+                Log.e("BLUETOOTH", "SecurityException: " + e.localizedMessage)
+            } catch (e: NoSuchMethodException) {
+                Log.e("BLUETOOTH", "NoSuchMethodException: " + e.localizedMessage)
+            }
+        }*/
         }
     }
 
@@ -74,15 +78,15 @@ class NetworkTest : Service() {
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             val telephonyManager =
                 applicationContext.getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
-            val level = telephonyManager.signalStrength!!.level
-            val dataState = telephonyManager.dataState
-            val simState = telephonyManager.simState
-
+            level = telephonyManager.signalStrength!!.level
+            dataState = telephonyManager.dataState
+            simState = telephonyManager.simState
             Log.d(
                 "NETWORK",
                 "${levelString(level)}  ${dataStateString(dataState)} ${simString(simState)}\n\n"
             )
         }
+
     }
 
     @SuppressLint("ServiceCast")
@@ -94,9 +98,9 @@ class NetworkTest : Service() {
             val mLocationManager =
                 applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             // Checking GPS is enabled
-            //val mGPS = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            val mGPS = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
             // Display the message into the string
-            //binding.reportText.text = mGPS.toString()
+            Log.d("GPS", mGPS.toString())
         }
     }
 
@@ -137,6 +141,9 @@ class NetworkTest : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             checkNetworkState()
         }
+        checkConnected()
+
+        Repository.setNetworkReport(level, dataState, simState, 0, connected)
         return super.onStartCommand(intent, flags, startId)
     }
 

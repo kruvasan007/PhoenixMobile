@@ -3,7 +3,6 @@ package com.example.phoenixmobile.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.phoenixmobile.model.Report
 
 @Entity(tableName = "report")
 data class ReportDto(

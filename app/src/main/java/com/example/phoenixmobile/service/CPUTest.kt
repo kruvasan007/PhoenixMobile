@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Base64
 import android.util.Log
+import com.example.phoenixmobile.data.Repository
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.security.MessageDigest
@@ -36,7 +37,7 @@ class CPUTest : Service() {
 
     private fun checkProcessor() {
         val cmd: ProcessBuilder
-        var result = ""
+        var frequency = ""
 
         val tsLong = System.nanoTime();
         for (i in 0..19999) {
@@ -61,12 +62,15 @@ class CPUTest : Service() {
             val `in` = process.inputStream
             val re = ByteArray(16)
             `in`.read(re)
-            result += String(re).split("?")[0]
+            frequency += String(re).split("?")[0]
             `in`.close()
         } catch (ex: IOException) {
             ex.printStackTrace()
         }
-        Log.d("CPU", result)
+
+        Log.d("CPU", frequency)
+
+        Repository.setCPUReport(frequency, score)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

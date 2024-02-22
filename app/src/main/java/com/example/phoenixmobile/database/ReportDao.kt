@@ -2,10 +2,7 @@ package com.example.phoenixmobile.database
 
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.Query
-import com.example.phoenixmobile.model.Report
 
 @Dao
 interface ReportDao {

@@ -11,6 +11,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.BatteryManager
+import android.os.Binder
 import android.os.Build
 import android.os.Environment
 import android.os.IBinder
@@ -18,12 +19,19 @@ import android.os.StatFs
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.example.phoenixmobile.data.Repository
 import java.io.File
 import kotlin.math.sqrt
+
 
 class HardWareCheck : Service(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var flagGyroscope = false
+    private val STEP_MAX_MAGNITUDE_GYRO = 2
+    private var totalRam = 0L
+    private var totalSpace = 0L
+    private var avalSpace = 0L
+    private var batteryStatus = -1
     private lateinit var observer: Observer<ArrayList<Float>>
     private val listen: MutableLiveData<ArrayList<Float>> = MutableLiveData()
     private val NS2S = 1.0f / 1000000000.0f
@@ -32,13 +40,16 @@ class HardWareCheck : Service(), SensorEventListener {
     fun checkBattery() {
         val receiver: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                val status = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
-                Log.d("BATTERY", getStatus(status))
+                batteryStatus = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
+                Log.d("BATTERY", getStatus(batteryStatus))
                 application.unregisterReceiver(this)
+
+                Repository.setBatteryReport(batteryStatus)
             }
         }
         application.registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
     }
+
 
     fun getStatus(status: Int): String {
         val statusStr = when (status) {
@@ -66,15 +77,16 @@ class HardWareCheck : Service(), SensorEventListener {
             listen.setValue(ArrayList())
             observer = Observer { data ->
                 if (data.size > 2) {
-                    if (data.max() / data.min() > 800) {
+                    if (data.max() > STEP_MAX_MAGNITUDE_GYRO) {
                         flagGyroscope = true
+                        Repository.setGyroscopeReport(flagGyroscope)
                         Log.d("GYRO", "OK")
                     }
                 }
             }
             listen.observeForever(observer)
         } else {
-            Log.d("Sensors", "No gyroscope")
+            Log.d("GYRO", "No gyroscope")
         }
     }
 
@@ -86,8 +98,10 @@ class HardWareCheck : Service(), SensorEventListener {
             val axisZ: Float = event.values[2]
             val omegaMagnitude: Float = sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ)
             val thetaOverTwo: Float = omegaMagnitude * dT / 2.0f
-            listen.value!!.add(thetaOverTwo)
+
+            listen.value!!.add(omegaMagnitude)
             listen.postValue(listen.value)
+            //Log.d("GYRO", omegaMagnitude.toString())
             if (flagGyroscope) {
                 listen.removeObserver(observer)
             }
@@ -103,16 +117,19 @@ class HardWareCheck : Service(), SensorEventListener {
             application.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo);
-        val totalRam = memoryInfo.totalMem / (1024 * 1024 * 1024);
+        totalRam = memoryInfo.totalMem / (1024 * 1024 * 1024);
         val iPath: File = Environment.getDataDirectory()
         val iStat = StatFs(iPath.path)
         val iBlockSize = iStat.blockSizeLong
         val iAvailableBlocks = iStat.availableBlocksLong
         val iTotalBlocks = iStat.blockCountLong
-        val iAvailableSpace = iAvailableBlocks * iBlockSize / (1024 * 1024 * 1024)
-        val iTotalSpace = iTotalBlocks * iBlockSize / (1024 * 1024 * 1024)
 
-        Log.d("MEMORY", "$totalRam GB $iTotalSpace TOTAL $iAvailableSpace AVAILABLE \n\n")
+        avalSpace = iAvailableBlocks * iBlockSize / (1024 * 1024 * 1024)
+        totalSpace = iTotalBlocks * iBlockSize / (1024 * 1024 * 1024)
+
+        Log.d("MEMORY", "$totalRam GB $totalSpace TOTAL $avalSpace AVAILABLE \n\n")
+
+        Repository.setMemoryReport(totalRam, totalSpace, avalSpace)
     }
 
     private fun checkOS() {
@@ -136,11 +153,13 @@ class HardWareCheck : Service(), SensorEventListener {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        TODO("Not yet implemented")
+    override fun onBind(intent: Intent?): IBinder {
+        Log.d("HARDWARE", "Bind")
+        return Binder()
     }
 
     override fun stopService(name: Intent?): Boolean {
+        println("Stop HW")
         return super.stopService(name)
     }
 }
