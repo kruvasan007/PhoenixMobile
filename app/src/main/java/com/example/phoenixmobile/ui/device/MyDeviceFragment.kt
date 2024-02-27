@@ -68,6 +68,7 @@ class MyDeviceFragment : Fragment() {
         )
 
         binding.btnGenReport.setOnClickListener {
+            binding.reportCardView.visibility = View.INVISIBLE
             binding.btnGenReport.isEnabled = false
             binding.progressBar.isIndeterminate = true
             binding.testList.visibility = View.VISIBLE
@@ -83,7 +84,7 @@ class MyDeviceFragment : Fragment() {
             if (it == Repository.REPORT_DONE) {
                 binding.testList.visibility = View.INVISIBLE
                 binding.progressBar.isIndeterminate = false
-                //binding.btnGenReport.isEnabled = true
+                binding.btnGenReport.isEnabled = true
                 binding.reportCardView.visibility = View.VISIBLE
             }
         }

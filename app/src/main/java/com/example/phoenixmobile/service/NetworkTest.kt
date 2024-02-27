@@ -29,7 +29,7 @@ class NetworkTest : Service() {
                 applicationContext, Manifest.permission.BLUETOOTH_CONNECT
             )
         } else {
-            TODO("VERSION.SDK_INT < S")
+            Log.d("NETWORK","Error: SDK version error")
         }
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             if (mBluetoothAdapter.isEnabled) {

@@ -2,6 +2,7 @@ package com.example.phoenixmobile.data
 
 import androidx.lifecycle.MutableLiveData
 import com.example.phoenixmobile.App
+import com.example.phoenixmobile.database.PriceDao
 import com.example.phoenixmobile.database.ReportDao
 import com.example.phoenixmobile.model.CPUReport
 import com.example.phoenixmobile.model.DisplayReport
@@ -15,7 +16,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONException
+import java.io.File
+import java.io.InputStreamReader
 import java.util.TreeMap
+
 
 object Repository {
     private val testList = MutableLiveData<TreeMap<String, Boolean>>()
@@ -24,20 +29,22 @@ object Repository {
     private val report = MutableLiveData<Report>()
     private val reportText = MutableLiveData<String>()
 
+    private val priceDao: PriceDao = App.getDatabase()!!.priceDao()
+
     private val CPUReport = MutableLiveData<CPUReport>()
     private val hardWareReport = MutableLiveData<HardWareReport>()
     private val displayReport = MutableLiveData<DisplayReport>()
     private val networkReport = MutableLiveData<NetworkReport>()
 
-    public val REPORT_STARTED = 1
-    public val REPORT_DONE = 2
-    public val REPORT_ERROR = 3
-    public val REPORT_NULL = 0
+    val REPORT_STARTED = 1
+    val REPORT_DONE = 2
+    val REPORT_ERROR = 3
+    private val REPORT_NULL = 0
 
-    public val AUDIO_CHECK_NULL = 0
+    private val AUDIO_CHECK_NULL = 0
     val AUDIO_WAIT_ANSWER = 1
-    public val AUDIO_CHECK_DONE = 2
-    public val AUDIO_CHECK_ERROR = 3
+    val AUDIO_CHECK_DONE = 2
+    val AUDIO_CHECK_ERROR = 3
 
     private val reportDao: ReportDao = App.getDatabase()!!.reportDao()
 
@@ -55,33 +62,43 @@ object Repository {
         reportDone.postValue(REPORT_NULL)
         audioTest.postValue(AUDIO_CHECK_NULL)
         hardWareReport.postValue(HardWareReport())
-
         testList.observeForever { data ->
             if (data != null) {
                 if (!data.values.contains(false)) {
                     reportDone.value = REPORT_DONE
-                    /*report.postValue(
-                    Report(
+                    report.value = Report(
                         CPUReport.value,
                         displayReport.value,
                         hardWareReport.value,
-                        networkReport.value
+                        networkReport.value,
+                        audioTest.value == AUDIO_CHECK_DONE
                     )
-                )*/
-
+                    reportText.value = Gson().toJson(
+                        report.value
+                    )
+                    setUpTest()
                 }
-                reportText.value = Gson().toJson(
-                    Report(
-                        CPUReport.value,
-                        displayReport.value,
-                        hardWareReport.value,
-                        networkReport.value
-                    )
-                )
+
             }
         }
         loadError.value = null
         loading.value = false
+    }
+
+    private fun setUpTest() {
+        testList.value = TreeMap(
+            mapOf(
+                Pair("CPU", false),
+                Pair("Battery", false),
+                Pair("Network", false),
+                Pair("Gyroscope", false),
+                Pair("Bluetooth", false),
+                Pair("Memory", false),
+                Pair("Display", false),
+                Pair("Audio System", false),
+                Pair("GPS", false)
+            )
+        )
     }
 
     fun setCPUReport(frequency: String, mark: String) {
@@ -122,7 +139,6 @@ object Repository {
     fun setGyroscopeReport(gyroState: Boolean) {
         hardWareReport.value?.gyroscope = gyroState.toString()
         report.value?.hardWareReport = hardWareReport.value
-
         testList.value?.set("Gyroscope", true)
         testList.postValue(testList.value)
     }
@@ -130,7 +146,6 @@ object Repository {
     fun setBatteryReport(batteryStatus: Int) {
         hardWareReport.value?.batteryState = batteryStatus
         report.value?.hardWareReport = hardWareReport.value
-
         testList.value?.set("Battery", true)
         testList.postValue(testList.value)
     }
@@ -139,23 +154,31 @@ object Repository {
         loading.value = true
         job = CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {
-                testList.value = TreeMap(
-                    mapOf(
-                        Pair("CPU", false),
-                        Pair("Battery", false),
-                        Pair("Network", false),
-                        Pair("Gyroscope", false),
-                        Pair("Bluetooth", false),
-                        Pair("Memory", false),
-                        Pair("Display", false),
-                        Pair("Audio System", false),
-                        Pair("GPS", false)
-                    )
-                )
+                setUpTest()
             }
         }
         loadError.value = ""
         loading.value = false
+    }
+
+    private fun setPriceTable() {
+        try {
+            // get JSONObject from JSON file
+            val inputStreamReader =
+                InputStreamReader(File("raw/configs_pattern.json").inputStream())
+            println(inputStreamReader.readLines())
+            /* val obj: JSONObject = JSONObject(JSON_STRING)
+             // fetch JSONObject named employee
+             val employee = obj.getJSONObject("employee")
+             // get employee name and salary
+             name = employee.getString("name")
+             salary = employee.getString("salary")
+             // set employee name and salary in TextView's
+             employeeName.setText("Name: " + name)
+             employeeSalary.setText("Salary: $salary")*/
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
     }
 
     fun getTestList() = testList
@@ -166,7 +189,10 @@ object Repository {
 
     fun setAudioResponse(state: Int) {
         audioTest.postValue(state)
-        testList.value?.set("Audio System", state == AUDIO_CHECK_DONE)
+        testList.value?.set(
+            "Audio System",
+            state == AUDIO_CHECK_DONE || state == AUDIO_CHECK_ERROR
+        )
         testList.postValue(testList.value)
     }
 }

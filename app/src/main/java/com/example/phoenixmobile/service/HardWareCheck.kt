@@ -27,7 +27,7 @@ import kotlin.math.sqrt
 class HardWareCheck : Service(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var flagGyroscope = false
-    private val STEP_MAX_MAGNITUDE_GYRO = 2
+    private val STEP_MAX_MAGNITUDE_GYRO = 2.5
     private var totalRam = 0L
     private var totalSpace = 0L
     private var avalSpace = 0L
@@ -43,7 +43,6 @@ class HardWareCheck : Service(), SensorEventListener {
                 batteryStatus = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
                 Log.d("BATTERY", getStatus(batteryStatus))
                 application.unregisterReceiver(this)
-
                 Repository.setBatteryReport(batteryStatus)
             }
         }

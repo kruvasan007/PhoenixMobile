@@ -1,7 +1,9 @@
 package com.example.phoenixmobile.service
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Binder
@@ -83,10 +85,12 @@ class AudioTest : Service() {
             File(applicationContext.getExternalFilesDir(Environment.DIRECTORY_MUSIC), ".temp.wav")
         fileName = dir.absolutePath
         GlobalScope.launch(Dispatchers.Main) {
+            val audioManager = application.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            audioManager.adjustVolume(AudioManager.ADJUST_UNMUTE, AudioManager.FLAG_PLAY_SOUND);
             val mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.sound);
             mediaPlayer.start()
             start()
-            delay(1000)
+            delay(2000)
             stop()
             mediaPlayer.stop()
             mediaPlayer.release()
