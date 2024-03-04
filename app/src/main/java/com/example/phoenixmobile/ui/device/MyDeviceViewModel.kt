@@ -19,7 +19,7 @@ import java.util.TreeMap
 
 
 class MyDeviceViewModel(application: Application) : AndroidViewModel(application) {
-    private val TIMEOUT_DURATION: Long = 60
+    private val TIMEOUT_DURATION: Long = 150
     private var testList = Repository.getTestList()
     private var audioTestState = Repository.getAudioTest()
     private var reportState = Repository.getReportState()

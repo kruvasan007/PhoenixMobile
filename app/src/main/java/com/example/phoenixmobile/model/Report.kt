@@ -1,6 +1,7 @@
 package com.example.phoenixmobile.model
 
 data class Report(
+    val deviceId: String? = null,
     val aboutDevice: String? = null,
     val cpuReport: CPUReport? = null,
     val displayReport: DisplayReport? = null,

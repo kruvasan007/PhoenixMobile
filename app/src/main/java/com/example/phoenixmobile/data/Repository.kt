@@ -9,13 +9,14 @@ import com.example.phoenixmobile.model.DisplayReport
 import com.example.phoenixmobile.model.HardWareReport
 import com.example.phoenixmobile.model.NetworkReport
 import com.example.phoenixmobile.model.Report
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.util.TreeMap
 
 
@@ -24,8 +25,9 @@ object Repository {
     private val audioTest = MutableLiveData<Int>()
     private val reportDone = MutableLiveData<Int>()
     private val report = MutableLiveData<Report>()
-    private val reportText = MutableLiveData<String>()
+    private val reportText = MutableLiveData<TreeMap<String, String>>()
     private var aboutdeviceText: String = ""
+    private var deviceId: String = ""
 
     private val bluetoothFlag = MutableLiveData<Boolean>()
 
@@ -80,6 +82,10 @@ object Repository {
         loading.value = false
     }
 
+    fun setDeviceId(value: String) {
+        deviceId = value
+    }
+
     fun setReportStarted() {
         reportDone.postValue(REPORT_STARTED)
     }
@@ -108,6 +114,7 @@ object Repository {
     private fun setUpReportToSend() {
         reportDone.value = REPORT_DONE
         report.value = Report(
+            deviceId,
             aboutdeviceText,
             CPUReport.value,
             displayReport.value,
@@ -115,9 +122,14 @@ object Repository {
             networkReport.value,
             audioTest.value == AUDIO_CHECK_DONE
         )
-        reportText.value = Gson().toJson(
-            report.value
-        )
+        val gsonPretty = GsonBuilder().setPrettyPrinting().create()
+        val jObject = JSONObject(gsonPretty.toJson(report.value))
+        val reportMap = TreeMap<String, String>()
+        for (testName in jObject.keys()) {
+            println(jObject.getString(testName) + "\n")
+            reportMap[testName] = jObject.getString(testName)
+        }
+        reportText.postValue(reportMap)
         setUpTest()
     }
 
@@ -186,7 +198,7 @@ object Repository {
     }
 
     fun setDisplayReport(screenWidth: Int, screenHeight: Int, density: Float) {
-        if (screenHeight != -1 && screenWidth != -1 && density != 0f) {
+        if (screenHeight != -1 && screenWidth != -1) {
             testList.value?.set("Display", REPORT_DONE)
         } else {
             testList.value?.set("Display", REPORT_ERROR)
@@ -215,7 +227,7 @@ object Repository {
 
     fun setReportTimeExpired() {
         reportDone.postValue(REPORT_ERROR)
-        reportText.postValue("Error while receiving report!")
+        reportText.postValue(TreeMap(mapOf(Pair("", "Error while receiving report!"))))
     }
 
     fun getTestList() = testList

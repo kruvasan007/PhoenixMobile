@@ -121,7 +121,7 @@ class AudioTest : Service() {
 
         createMediaPlayerSource()
         Repository.getReportState().observeForever {
-            if (it == Repository.REPORT_STARTED) {
+            if (it == Repository.REPORT_STARTED && !isRecording) {
                 startChecking()
             }
         }
@@ -199,6 +199,7 @@ class AudioTest : Service() {
             }
 
             override fun onFinish() {
+                isRecording = false
                 mediaPlayer?.stop()
                 Repository.setAudioResponse(Repository.AUDIO_WAIT_ANSWER)
             }

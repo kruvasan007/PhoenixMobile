@@ -8,12 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.phoenixmobile.R
 import com.example.phoenixmobile.data.Repository
 import com.example.phoenixmobile.databinding.FragmentMyDeviceBinding
 import com.example.phoenixmobile.ui.device.adapter.LoadingAdapter
+import com.example.phoenixmobile.ui.device.adapter.ReportAdapter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -23,10 +27,15 @@ import java.util.TreeMap
 
 
 class MyDeviceFragment : Fragment() {
-    private val REQUEST_PERMISSIONS = 1;
+    private val REQUEST_PERMISSIONS = 1
+    var myDialog: AlertDialog? = null
 
-    private lateinit var adapter: LoadingAdapter
+    private val DISPLAY_ERROR_INT_STATE = -1
+    private val DISPLAY_ERROR_FLOAT_STATE = 0f
+    private lateinit var adapterTestChips: LoadingAdapter
+    private lateinit var adapterReportText: ReportAdapter
     private var testList: TreeMap<String, Int> = TreeMap()
+    private var reportList: TreeMap<String, String> = TreeMap()
 
     private var _binding: FragmentMyDeviceBinding? = null
     private val viewModel: MyDeviceViewModel by activityViewModels()
@@ -37,23 +46,30 @@ class MyDeviceFragment : Fragment() {
     ): View {
         _binding = FragmentMyDeviceBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.deviceName.text = viewModel.getDeviceName()
         return root
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = LoadingAdapter(testList)
+        //set model label
+        binding.deviceName.text = viewModel.getDeviceName()
 
+        //set adapter for recycler view with report text
+        adapterReportText = ReportAdapter(reportList)
+        val layoutManagerReport = LinearLayoutManager(context)
+        binding.reportList.adapter = adapterReportText
+        binding.reportList.layoutManager = layoutManagerReport
+
+        //set adapter for view with chips about test
+        adapterTestChips = LoadingAdapter(testList)
         val layoutManager = FlexboxLayoutManager(context)
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         binding.testList.layoutManager = layoutManager
+        binding.testList.adapter = adapterTestChips
 
-        binding.testList.adapter = adapter
-
+        //require permissions
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf(
@@ -76,8 +92,30 @@ class MyDeviceFragment : Fragment() {
         }
 
         fragmentTextUpdateObserver()
-        fragmentAudioTestRequest()
+        fragmentAudioTestRequestObserver()
+        fragmentReportStateUpdateObserver()
 
+        checkBluetoothConnection()
+
+        binding.floatingActionButton.setOnClickListener {
+            MaterialAlertDialogBuilder(
+                requireContext(),
+                com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
+            ).setTitle("FAQ").setMessage(getString(R.string.FAQ_descr))
+                .setPositiveButton("Cool") { dialog, which ->
+                    dialog.cancel()
+                }
+                .create().show()
+        }
+
+        viewModel.report().observe(viewLifecycleOwner) { data ->
+            binding.reportList.visibility = View.VISIBLE
+            reportList = data
+            adapterReportText.updateList(reportList)
+        }
+    }
+
+    private fun fragmentReportStateUpdateObserver() {
         viewModel.reportState().observe(viewLifecycleOwner) {
             if (it == Repository.REPORT_DONE || it == Repository.REPORT_ERROR) {
                 binding.testList.visibility = View.INVISIBLE
@@ -86,7 +124,9 @@ class MyDeviceFragment : Fragment() {
                 binding.reportCardView.visibility = View.VISIBLE
             }
         }
+    }
 
+    private fun checkBluetoothConnection() {
         viewModel.bluetoothConnect().observe(viewLifecycleOwner) { bluetoothFlag ->
             if (!bluetoothFlag && Repository.getAudioTest().value == Repository.AUDIO_CHECK_STARTED) {
                 Snackbar.make(
@@ -98,12 +138,7 @@ class MyDeviceFragment : Fragment() {
                 }.show()
             }
         }
-
-        viewModel.report().observe(viewLifecycleOwner) {
-            binding.reportText.text = it
-        }
     }
-
 
     private fun startGenerateReport() {
         binding.reportCardView.visibility = View.INVISIBLE
@@ -112,10 +147,18 @@ class MyDeviceFragment : Fragment() {
         binding.testList.visibility = View.VISIBLE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
             checkDisplayState()
+        else {
+            Log.d("SDK_STATE", "Display status cannot be checked")
+            viewModel.setDisplayCheck(
+                DISPLAY_ERROR_INT_STATE,
+                DISPLAY_ERROR_INT_STATE,
+                DISPLAY_ERROR_FLOAT_STATE
+            )
+        }
         viewModel.startCheck()
     }
 
-    private fun fragmentAudioTestRequest() {
+    private fun fragmentAudioTestRequestObserver() {
         viewModel.audioTest().observe(viewLifecycleOwner) { data ->
             when (data) {
                 Repository.AUDIO_CHECK_START_PLAYING -> {
@@ -127,19 +170,22 @@ class MyDeviceFragment : Fragment() {
                 }
 
                 Repository.AUDIO_WAIT_ANSWER -> {
-                    MaterialAlertDialogBuilder(
-                        requireContext(),
-                        com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
-                    )
-                        .setMessage("Does the recorded sound match the sample?")
-                        .setNegativeButton("No") { dialog, which ->
-                            viewModel.setAudioReply(false)
-                        }
-                        .setPositiveButton("Yes") { dialog, which ->
-                            viewModel.setAudioReply(true)
-                        }
-                        .setCancelable(false)
-                        .show()
+                    if (myDialog == null || !(myDialog!!.isShowing)) {
+                        myDialog = MaterialAlertDialogBuilder(
+                            requireContext(),
+                            com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
+                        ).apply {
+                            setMessage("Does the recorded sound match the sample?")
+                            setNegativeButton("No") { dialog, which ->
+                                viewModel.setAudioReply(false)
+                            }
+                            setPositiveButton("Yes") { dialog, which ->
+                                viewModel.setAudioReply(true)
+                            }
+                            setCancelable(false)
+                        }.create()
+                        myDialog!!.show()
+                    }
                 }
 
                 Repository.AUDIO_DONE_PLAY -> {
@@ -153,11 +199,10 @@ class MyDeviceFragment : Fragment() {
         }
     }
 
-
     private fun fragmentTextUpdateObserver() {
         viewModel.getTest().observe(viewLifecycleOwner) { data ->
             testList = data
-            adapter.updateList(testList)
+            adapterTestChips.updateList(testList)
         }
     }
 

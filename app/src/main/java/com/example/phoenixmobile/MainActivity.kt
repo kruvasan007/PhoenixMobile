@@ -10,7 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.phoenixmobile.databinding.ActivityMainBinding
 import com.example.phoenixmobile.service.AudioTest
 import com.example.phoenixmobile.service.CPUTest
-import com.example.phoenixmobile.service.HardWareCheck
+import com.example.phoenixmobile.service.HardWareTest
 import com.example.phoenixmobile.service.NetworkTest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startService(Intent(this, HardWareCheck::class.java))
+        startService(Intent(this, HardWareTest::class.java))
         startService(Intent(this, NetworkTest::class.java))
         startService(Intent(this, CPUTest::class.java))
         startService(Intent(this, AudioTest::class.java))
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        stopService(Intent(this, HardWareCheck::class.java))
+        stopService(Intent(this, HardWareTest::class.java))
         stopService(Intent(this, NetworkTest::class.java))
         stopService(Intent(this, CPUTest::class.java))
         stopService(Intent(this, AudioTest::class.java))

@@ -63,6 +63,7 @@ class CPUTest : Service() {
             val re = ByteArray(16)
             `in`.read(re)
             frequency += String(re).split("?")[0]
+            frequency = frequency.split("\n")[0]
             `in`.close()
         } catch (ex: IOException) {
             ex.printStackTrace()

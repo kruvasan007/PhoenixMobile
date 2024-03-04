@@ -26,7 +26,7 @@ import java.io.File
 import kotlin.math.sqrt
 
 
-class HardWareCheck : Service(), SensorEventListener {
+class HardWareTest : Service(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var flagGyroscope = false
     private val STEP_MAX_MAGNITUDE_GYRO = 2.5
@@ -154,6 +154,7 @@ class HardWareCheck : Service(), SensorEventListener {
                     "model:$phoneModel; hardware:$hardware; boardModel:$board; " +
                     "bootloader:$bootloader; display:$display; imei:$deviceId"
         )
+        Repository.setDeviceId(deviceId)
 
         Log.d(
             "SYSTEM",
