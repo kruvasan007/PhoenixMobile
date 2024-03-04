@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.phoenixmobile.R
+import com.example.phoenixmobile.data.Repository
 import com.google.android.material.chip.Chip
 import java.util.TreeMap
 
-class LoadingAdapter(private var testList: TreeMap<String, Boolean>) :
+class LoadingAdapter(private var testList: TreeMap<String, Int>) :
     RecyclerView.Adapter<LoadingAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -18,7 +19,7 @@ class LoadingAdapter(private var testList: TreeMap<String, Boolean>) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateList(list: TreeMap<String, Boolean>) {
+    fun updateList(list: TreeMap<String, Int>) {
         testList = list
         notifyDataSetChanged()
     }
@@ -33,8 +34,13 @@ class LoadingAdapter(private var testList: TreeMap<String, Boolean>) :
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: Chip = itemView.findViewById(R.id.chip)
-        fun bind(test: Pair<String, Boolean>) {
-            name.isChecked = test.second
+
+        @SuppressLint("ResourceAsColor")
+        fun bind(test: Pair<String, Int>) {
+            name.isChecked =
+                test.second == Repository.REPORT_DONE || test.second == Repository.AUDIO_CHECK_DONE
+            if (test.second == Repository.REPORT_ERROR)
+                name.setChipBackgroundColorResource(R.color.error_color)
         }
     }
 

@@ -1,45 +1,42 @@
 package com.example.phoenixmobile.ui.device
 
-import android.content.Context
-import android.content.Intent
-import androidx.lifecycle.ViewModel
+import android.annotation.SuppressLint
+import android.app.Application
+import android.os.Build
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.example.phoenixmobile.R
 import com.example.phoenixmobile.data.Repository
-import com.example.phoenixmobile.service.AudioTest
-import com.example.phoenixmobile.service.CPUTest
-import com.example.phoenixmobile.service.HardWareCheck
-import com.example.phoenixmobile.service.NetworkTest
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import java.io.InputStreamReader
+import java.util.TreeMap
 
 
-class MyDeviceViewModel : ViewModel() {
-
+class MyDeviceViewModel(application: Application) : AndroidViewModel(application) {
+    private val TIMEOUT_DURATION: Long = 60
     private var testList = Repository.getTestList()
     private var audioTestState = Repository.getAudioTest()
     private var reportState = Repository.getReportState()
     private var reportText = Repository.getReportToText()
-    private lateinit var HWintent: Intent
-    private lateinit var CPUintent: Intent
-    private lateinit var AUDIOintent: Intent
-    private lateinit var NETWORKintent: Intent
+    private var bluetoothConnect = Repository.getBluetoothFlag()
+    private val samsungNames = TreeMap<String, String>()
 
-    private fun startService(context: Context) {
-        HWintent = Intent(context, HardWareCheck::class.java);
-        NETWORKintent = Intent(context, NetworkTest::class.java);
-        CPUintent = Intent(context, CPUTest::class.java);
-        AUDIOintent = Intent(context, AudioTest::class.java);
-        context.startService(HWintent)
-        context.startService(NETWORKintent)
-        context.startService(CPUintent)
-        context.startService(AUDIOintent)
+    init {
+        loadNames()
     }
 
-    private fun stopService(context: Context) {
-        context.stopService(HWintent)
-        context.stopService(NETWORKintent)
-        context.stopService(CPUintent)
-        context.stopService(AUDIOintent)
+    fun getDeviceName(): String? {
+        val phoneModel = Build.MODEL
+        return if (samsungNames.contains(phoneModel)) {
+            samsungNames[phoneModel]
+        } else
+            phoneModel
     }
 
     fun setDisplayCheck(screenWidth: Int, screenHeight: Int, density: Float) {
@@ -49,23 +46,59 @@ class MyDeviceViewModel : ViewModel() {
     fun getTest() = testList
     fun audioTest() = audioTestState
     fun reportState() = reportState
-
     fun report() = reportText
+    fun bluetoothConnect() = bluetoothConnect
 
     fun setAudioReply(reply: Boolean) {
         if (reply)
             Repository.setAudioResponse(Repository.AUDIO_CHECK_DONE)
         else
-            Repository.setAudioResponse(Repository.AUDIO_CHECK_ERROR)
+            Repository.setAudioResponse(Repository.REPORT_ERROR)
     }
 
-    fun startCheck(context: Context) {
-        startService(context)
+    fun tryBluetoothAgain() {
+        Repository.setBluetoothDisconnected()
+    }
+
+    @SuppressLint("ResourceType")
+    private fun loadNames() {
+        val inputStreamReader = InputStreamReader(
+            getApplication<Application>().resources.openRawResource(
+                R.raw.samsung_names
+            )
+        )
+        for (lines in inputStreamReader.readLines()) {
+            val line = lines.split(",")
+            samsungNames[line[0]] = line[1]
+        }
+    }
+
+    fun timerFlow(duration: Long): Flow<Long> = flow {
+        for (i in duration downTo 0) {
+            emit(i)
+            delay(1000)
+        }
+    }
+
+    fun startCheck() {
+        Repository.setReportStarted()
+        viewModelScope.launch {
+            timerFlow(TIMEOUT_DURATION).collect { time ->
+                if (time == 0L) {
+                    this.cancel()
+                    Repository.setReportTimeExpired()
+                    Log.d("TIMER", "Stopped auto")
+                } else if (Repository.getReportState().value == Repository.REPORT_DONE) {
+                    this.cancel()
+                    Log.d("TIMER", "Stopped with done")
+                }
+                println(time)
+            }
+        }
         viewModelScope.launch {
             reportState.asFlow().collect {
-                println(it)
-                if (it == Repository.REPORT_DONE) {
-                    stopService(context)
+                if (it == Repository.REPORT_DONE || it == Repository.REPORT_ERROR) {
+                    Log.d("VW", "Stop service")
                 }
             }
         }

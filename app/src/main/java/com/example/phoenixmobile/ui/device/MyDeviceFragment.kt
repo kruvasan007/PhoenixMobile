@@ -18,6 +18,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import java.util.TreeMap
 
 
@@ -25,7 +26,7 @@ class MyDeviceFragment : Fragment() {
     private val REQUEST_PERMISSIONS = 1;
 
     private lateinit var adapter: LoadingAdapter
-    private var testList: TreeMap<String, Boolean> = TreeMap()
+    private var testList: TreeMap<String, Int> = TreeMap()
 
     private var _binding: FragmentMyDeviceBinding? = null
     private val viewModel: MyDeviceViewModel by activityViewModels()
@@ -36,11 +37,11 @@ class MyDeviceFragment : Fragment() {
     ): View {
         _binding = FragmentMyDeviceBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val phoneModel = Build.MODEL
-        binding.deviceName.text = phoneModel
+        binding.deviceName.text = viewModel.getDeviceName()
         return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -57,7 +58,10 @@ class MyDeviceFragment : Fragment() {
             requireActivity(),
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH,
                 Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.BLUETOOTH_ADMIN,
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_NETWORK_STATE,
@@ -68,24 +72,30 @@ class MyDeviceFragment : Fragment() {
         )
 
         binding.btnGenReport.setOnClickListener {
-            binding.reportCardView.visibility = View.INVISIBLE
-            binding.btnGenReport.isEnabled = false
-            binding.progressBar.isIndeterminate = true
-            binding.testList.visibility = View.VISIBLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                checkDisplayState()
-            viewModel.startCheck(requireContext())
+            startGenerateReport()
         }
 
         fragmentTextUpdateObserver()
         fragmentAudioTestRequest()
 
         viewModel.reportState().observe(viewLifecycleOwner) {
-            if (it == Repository.REPORT_DONE) {
+            if (it == Repository.REPORT_DONE || it == Repository.REPORT_ERROR) {
                 binding.testList.visibility = View.INVISIBLE
                 binding.progressBar.isIndeterminate = false
                 binding.btnGenReport.isEnabled = true
                 binding.reportCardView.visibility = View.VISIBLE
+            }
+        }
+
+        viewModel.bluetoothConnect().observe(viewLifecycleOwner) { bluetoothFlag ->
+            if (!bluetoothFlag && Repository.getAudioTest().value == Repository.AUDIO_CHECK_STARTED) {
+                Snackbar.make(
+                    binding.root,
+                    "Please, disconnect with bluetooth device",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction("Yes, i disable bluetooth") {
+                    viewModel.tryBluetoothAgain()
+                }.show()
             }
         }
 
@@ -94,24 +104,55 @@ class MyDeviceFragment : Fragment() {
         }
     }
 
+
+    private fun startGenerateReport() {
+        binding.reportCardView.visibility = View.INVISIBLE
+        binding.btnGenReport.isEnabled = false
+        binding.progressBar.isIndeterminate = true
+        binding.testList.visibility = View.VISIBLE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+            checkDisplayState()
+        viewModel.startCheck()
+    }
+
     private fun fragmentAudioTestRequest() {
         viewModel.audioTest().observe(viewLifecycleOwner) { data ->
-            if (data == Repository.AUDIO_WAIT_ANSWER) {
-                MaterialAlertDialogBuilder(
-                    requireContext(),
-                    com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
-                )
-                    .setMessage("Does the recorded sound match the sample?")
-                    .setNegativeButton("No") { dialog, which ->
-                        viewModel.setAudioReply(false)
-                    }
-                    .setPositiveButton("Yes") { dialog, which ->
-                        viewModel.setAudioReply(true)
-                    }
-                    .show()
+            when (data) {
+                Repository.AUDIO_CHECK_START_PLAYING -> {
+                    Snackbar.make(
+                        binding.root,
+                        "Start play audio sample...",
+                        Snackbar.ANIMATION_MODE_SLIDE
+                    ).show()
+                }
+
+                Repository.AUDIO_WAIT_ANSWER -> {
+                    MaterialAlertDialogBuilder(
+                        requireContext(),
+                        com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
+                    )
+                        .setMessage("Does the recorded sound match the sample?")
+                        .setNegativeButton("No") { dialog, which ->
+                            viewModel.setAudioReply(false)
+                        }
+                        .setPositiveButton("Yes") { dialog, which ->
+                            viewModel.setAudioReply(true)
+                        }
+                        .setCancelable(false)
+                        .show()
+                }
+
+                Repository.AUDIO_DONE_PLAY -> {
+                    Snackbar.make(
+                        binding.root,
+                        "Start play audio recording...",
+                        Snackbar.ANIMATION_MODE_SLIDE
+                    ).show()
+                }
             }
         }
     }
+
 
     private fun fragmentTextUpdateObserver() {
         viewModel.getTest().observe(viewLifecycleOwner) { data ->

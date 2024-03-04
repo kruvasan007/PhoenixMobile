@@ -3,7 +3,7 @@ package com.example.phoenixmobile.data
 import androidx.lifecycle.MutableLiveData
 import com.example.phoenixmobile.App
 import com.example.phoenixmobile.database.PriceDao
-import com.example.phoenixmobile.database.ReportDao
+import com.example.phoenixmobile.database.PriceDto
 import com.example.phoenixmobile.model.CPUReport
 import com.example.phoenixmobile.model.DisplayReport
 import com.example.phoenixmobile.model.HardWareReport
@@ -16,19 +16,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONException
-import java.io.File
-import java.io.InputStreamReader
 import java.util.TreeMap
 
 
 object Repository {
-    private val testList = MutableLiveData<TreeMap<String, Boolean>>()
+    private val testList = MutableLiveData<TreeMap<String, Int>>()
     private val audioTest = MutableLiveData<Int>()
     private val reportDone = MutableLiveData<Int>()
     private val report = MutableLiveData<Report>()
     private val reportText = MutableLiveData<String>()
+    private var aboutdeviceText: String = ""
 
+    private val bluetoothFlag = MutableLiveData<Boolean>()
+
+    private val priceList = MutableLiveData<List<PriceDto>>()
     private val priceDao: PriceDao = App.getDatabase()!!.priceDao()
 
     private val CPUReport = MutableLiveData<CPUReport>()
@@ -36,17 +37,19 @@ object Repository {
     private val displayReport = MutableLiveData<DisplayReport>()
     private val networkReport = MutableLiveData<NetworkReport>()
 
+    private val REPORT_NULL = 0
     val REPORT_STARTED = 1
     val REPORT_DONE = 2
     val REPORT_ERROR = 3
-    private val REPORT_NULL = 0
+    val REPORT_IN_PROCESS = 4
 
-    private val AUDIO_CHECK_NULL = 0
-    val AUDIO_WAIT_ANSWER = 1
-    val AUDIO_CHECK_DONE = 2
-    val AUDIO_CHECK_ERROR = 3
-
-    private val reportDao: ReportDao = App.getDatabase()!!.reportDao()
+    val AUDIO_CHECK_NULL = 0
+    val AUDIO_CHECK_STARTED = 1
+    val AUDIO_CHECK_DONE = 777
+    val AUDIO_CHECK_ERROR = 888
+    val AUDIO_WAIT_ANSWER = 4
+    val AUDIO_DONE_PLAY = 5
+    val AUDIO_CHECK_START_PLAYING = 6
 
     //private val retrofitService = Common.retrofitService
     private var job: Job? = null
@@ -59,96 +62,37 @@ object Repository {
 
     init {
         loadingTest()
+        bluetoothFlag.postValue(false)
         reportDone.postValue(REPORT_NULL)
         audioTest.postValue(AUDIO_CHECK_NULL)
         hardWareReport.postValue(HardWareReport())
         testList.observeForever { data ->
             if (data != null) {
-                if (!data.values.contains(false)) {
-                    reportDone.value = REPORT_DONE
-                    report.value = Report(
-                        CPUReport.value,
-                        displayReport.value,
-                        hardWareReport.value,
-                        networkReport.value,
-                        audioTest.value == AUDIO_CHECK_DONE
-                    )
-                    reportText.value = Gson().toJson(
-                        report.value
-                    )
-                    setUpTest()
+                if (!data.values.contains(REPORT_NULL) && (data.values.contains(AUDIO_CHECK_DONE) || data.values.contains(
+                        REPORT_ERROR
+                    ))
+                ) {
+                    setUpReportToSend()
                 }
-
             }
         }
         loadError.value = null
         loading.value = false
     }
 
-    private fun setUpTest() {
-        testList.value = TreeMap(
-            mapOf(
-                Pair("CPU", false),
-                Pair("Battery", false),
-                Pair("Network", false),
-                Pair("Gyroscope", false),
-                Pair("Bluetooth", false),
-                Pair("Memory", false),
-                Pair("Display", false),
-                Pair("Audio System", false),
-                Pair("GPS", false)
-            )
-        )
+    fun setReportStarted() {
+        reportDone.postValue(REPORT_STARTED)
     }
 
-    fun setCPUReport(frequency: String, mark: String) {
-        val report = CPUReport(frequency, mark)
-        CPUReport.postValue(report)
-
-        testList.value?.set("CPU", true)
-        testList.postValue(testList.value)
+    fun setBluetoothConnected() {
+        bluetoothFlag.postValue(false)
     }
 
-    fun setNetworkReport(level: Int, dataStatus: Int, simState: Int, GPS: Int, bluetooth: Boolean) {
-        val report = NetworkReport(level, dataStatus, simState, GPS, bluetooth)
-        networkReport.postValue(report)
-        if (level != -1 && dataStatus != -1 && simState != -1) testList.value?.set("Network", true)
-        if (bluetooth) testList.value?.set("Bluetooth", true)
-        if (GPS != -1) testList.value?.set("GPS", true)
-        testList.postValue(testList.value)
+    fun setBluetoothDisconnected() {
+        bluetoothFlag.postValue(true)
     }
 
-    fun setMemoryReport(ram: Long, total: Long, aval: Long) {
-        hardWareReport.value?.ram = ram
-        hardWareReport.value?.totalSpace = total
-        hardWareReport.value?.availabSpace = aval
-
-        report.value?.hardWareReport = hardWareReport.value
-        testList.value?.set("Memory", true)
-        testList.postValue(testList.value)
-    }
-
-    fun setDisplayReport(screenWidth: Int, screenHeight: Int, density: Float) {
-        val report = DisplayReport(screenWidth, screenHeight, density)
-        if (screenHeight != -1 && screenWidth != -1 && density != 0f) displayReport.postValue(report)
-
-        testList.value?.set("Display", true)
-        testList.postValue(testList.value)
-    }
-
-    fun setGyroscopeReport(gyroState: Boolean) {
-        hardWareReport.value?.gyroscope = gyroState.toString()
-        report.value?.hardWareReport = hardWareReport.value
-        testList.value?.set("Gyroscope", true)
-        testList.postValue(testList.value)
-    }
-
-    fun setBatteryReport(batteryStatus: Int) {
-        hardWareReport.value?.batteryState = batteryStatus
-        report.value?.hardWareReport = hardWareReport.value
-        testList.value?.set("Battery", true)
-        testList.postValue(testList.value)
-    }
+    fun getBluetoothFlag() = bluetoothFlag
 
     private fun loadingTest() {
         loading.value = true
@@ -161,24 +105,117 @@ object Repository {
         loading.value = false
     }
 
-    private fun setPriceTable() {
-        try {
-            // get JSONObject from JSON file
-            val inputStreamReader =
-                InputStreamReader(File("raw/configs_pattern.json").inputStream())
-            println(inputStreamReader.readLines())
-            /* val obj: JSONObject = JSONObject(JSON_STRING)
-             // fetch JSONObject named employee
-             val employee = obj.getJSONObject("employee")
-             // get employee name and salary
-             name = employee.getString("name")
-             salary = employee.getString("salary")
-             // set employee name and salary in TextView's
-             employeeName.setText("Name: " + name)
-             employeeSalary.setText("Salary: $salary")*/
-        } catch (e: JSONException) {
-            e.printStackTrace()
+    private fun setUpReportToSend() {
+        reportDone.value = REPORT_DONE
+        report.value = Report(
+            aboutdeviceText,
+            CPUReport.value,
+            displayReport.value,
+            hardWareReport.value,
+            networkReport.value,
+            audioTest.value == AUDIO_CHECK_DONE
+        )
+        reportText.value = Gson().toJson(
+            report.value
+        )
+        setUpTest()
+    }
+
+    private fun setUpTest() {
+        testList.value = TreeMap(
+            mapOf(
+                Pair("CPU", REPORT_NULL),
+                Pair("Battery", REPORT_NULL),
+                Pair("Network", REPORT_NULL),
+                Pair("Gyroscope", REPORT_NULL),
+                Pair("Bluetooth", REPORT_NULL),
+                Pair("Memory", REPORT_NULL),
+                Pair("Display", REPORT_NULL),
+                Pair("Audio System", REPORT_NULL),
+                Pair("GPS", REPORT_NULL)
+            )
+        )
+        bluetoothFlag.postValue(false)
+        audioTest.postValue(AUDIO_CHECK_NULL)
+    }
+
+    fun setCPUReport(frequency: String, mark: String) {
+        testList.value?.set("CPU", REPORT_DONE)
+        testList.postValue(testList.value)
+
+        val report = CPUReport(frequency, mark)
+        CPUReport.postValue(report)
+    }
+
+    fun setNetworkReport(
+        level: Int,
+        dataStatus: Int,
+        simState: Int,
+        GPS: Boolean,
+        bluetooth: Boolean
+    ) {
+        if (level != -1 && dataStatus != -1 && simState != -1) {
+            testList.value?.set("Network", REPORT_DONE)
+        } else {
+            testList.value?.set("Network", REPORT_ERROR)
         }
+        if (bluetooth) {
+            testList.value?.set("Bluetooth", REPORT_DONE)
+        } else {
+            testList.value?.set("Bluetooth", REPORT_ERROR)
+        }
+        if (GPS) {
+            testList.value?.set("GPS", REPORT_DONE)
+        } else {
+            testList.value?.set("GPS", REPORT_ERROR)
+        }
+        testList.postValue(testList.value)
+
+        val report = NetworkReport(level, dataStatus, simState, GPS, bluetooth)
+        networkReport.postValue(report)
+    }
+
+    fun setMemoryReport(ram: Long, total: Long, aval: Long) {
+        testList.value?.set("Memory", REPORT_DONE)
+        testList.postValue(testList.value)
+
+        hardWareReport.value?.ram = ram
+        hardWareReport.value?.totalSpace = total
+        hardWareReport.value?.availabSpace = aval
+        report.value?.hardWareReport = hardWareReport.value
+    }
+
+    fun setDisplayReport(screenWidth: Int, screenHeight: Int, density: Float) {
+        if (screenHeight != -1 && screenWidth != -1 && density != 0f) {
+            testList.value?.set("Display", REPORT_DONE)
+        } else {
+            testList.value?.set("Display", REPORT_ERROR)
+        }
+        testList.postValue(testList.value)
+
+        val report = DisplayReport(screenWidth, screenHeight, density)
+        displayReport.postValue(report)
+    }
+
+    fun setGyroscopeReport(gyroState: Boolean) {
+        testList.value?.set("Gyroscope", REPORT_DONE)
+        testList.postValue(testList.value)
+
+        hardWareReport.value?.gyroscope = gyroState.toString()
+        report.value?.hardWareReport = hardWareReport.value
+    }
+
+    fun setBatteryReport(batteryStatus: Int) {
+        testList.value?.set("Battery", REPORT_DONE)
+        testList.postValue(testList.value)
+
+        hardWareReport.value?.batteryState = batteryStatus
+        report.value?.hardWareReport = hardWareReport.value
+    }
+
+    fun setReportTimeExpired() {
+        reportDone.postValue(REPORT_ERROR)
+        reportText.postValue("Error while receiving report!")
     }
 
     fun getTestList() = testList
@@ -188,11 +225,27 @@ object Repository {
     fun getReportToText() = reportText
 
     fun setAudioResponse(state: Int) {
-        audioTest.postValue(state)
         testList.value?.set(
             "Audio System",
-            state == AUDIO_CHECK_DONE || state == AUDIO_CHECK_ERROR
+            state
         )
         testList.postValue(testList.value)
+
+        audioTest.postValue(state)
+    }
+
+    fun insertPriceTable(priceItem: PriceDto) {
+        priceDao.insertModel(priceItem)
+    }
+
+    fun loadPriceTable() {
+        job = CoroutineScope(Dispatchers.Main).launch {
+            priceList.postValue(priceDao.getAll())
+        }
+    }
+
+    fun getPriceList() = priceList
+    fun setOSReport(report: String) {
+        aboutdeviceText = report
     }
 }

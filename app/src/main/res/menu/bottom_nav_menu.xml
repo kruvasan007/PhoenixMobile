@@ -3,10 +3,13 @@
 
     <item
         android:id="@+id/navigation_mydevice"
+        android:icon="@drawable/phone"
         android:title="@string/title_mydevice" />
 
     <item
+
         android:id="@+id/navigation_search"
+        android:icon="@drawable/search"
         android:title="@string/title_search" />
 
 </menu>

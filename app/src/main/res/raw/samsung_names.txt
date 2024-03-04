@@ -1,0 +1,946 @@
+GT-B9120,Absolute
+SCH-R880,Acclaim
+SCH-R720,Admire
+baffinltelgt,Baffin
+SGH_T939,Behold II
+sgh-t939,Behold II
+SGH-I927,Captivate Glide
+kylevectc,China Telecom
+SPH-D600,Conquer
+SGH-I857,DoubleTime
+SCH-I510,Droid Charge
+gd1ltektt,EK-KC120K
+GT-I5500L,Europa
+GT-I5500B,Europa
+GT-I5500M,Europa
+GT-I5510L,Europa
+GT-I5503T,Europa
+SGH-T759,Exhibit
+gt-i7500,Galaxy
+GT-B9062,Galaxy (China)
+hendrix,Galaxy 070
+archer,Galaxy A
+a3ltechn,Galaxy A3
+a3ltezh,Galaxy A3
+a3ulte,Galaxy A3
+a33g,Galaxy A3
+a3lte,Galaxy A3
+a3ltectc,Galaxy A3
+a5ltezh,Galaxy A5
+a5ltezt,Galaxy A5
+a5ulteskt,Galaxy A5
+a5lte,Galaxy A5
+a5ultektt,Galaxy A5
+a5ltectc,Galaxy A5
+a5ultelgt,Galaxy A5
+a53g,Galaxy A5
+a5ltechn,Galaxy A5
+a7alte,Galaxy A7
+a7ltektt,Galaxy A7
+a7ltelgt,Galaxy A7
+a7lteskt,Galaxy A7
+GT-S5830T,Galaxy Ace
+GT-S5830,Galaxy Ace
+heat3gou,Galaxy Ace
+GT-S5839i,Galaxy Ace
+heatlte,Galaxy Ace
+GT-S5830L,Galaxy Ace
+GT-S5830C,Galaxy Ace
+GT-S6358,Galaxy Ace
+SHW-M240S,Galaxy Ace
+GT-S5830B,Galaxy Ace
+GT-S5830G,Galaxy Ace
+GT-S5838,Galaxy Ace
+GT-S5830F,Galaxy Ace
+GT-S5830i,Galaxy Ace
+SCH-I619,Galaxy Ace
+GT-S5830D,Galaxy Ace
+GT-S5831i,Galaxy Ace
+GT-S5830M,Galaxy Ace
+vivaltods5m,Galaxy Ace 4
+vivalto3g,Galaxy Ace 4 Lite
+GT-S6800,Galaxy Ace Advance
+SCH-i589,Galaxy Ace Duos
+SCH-I589,Galaxy Ace Duos
+GT-S6802B,Galaxy Ace Duos
+GT-S6352,Galaxy Ace Duos
+SCH-i579,Galaxy Ace Duos
+SCH-I579,Galaxy Ace Duos
+GT-S6802,Galaxy Ace Duos
+GT-S7508,Galaxy Ace Plus
+GT-S7500L,Galaxy Ace Plus
+GT-S7500W,Galaxy Ace Plus
+GT-S7500T,Galaxy Ace Plus
+GT-S7500,Galaxy Ace Plus
+SGH-I827D,Galaxy Ace Q
+heat3gtfnvzw,Galaxy Ace Style
+heatnfc3g,Galaxy Ace Style
+heatqlte,Galaxy Ace Style
+GT-I8160L,Galaxy Ace2
+GT-I8160,Galaxy Ace2
+GT-I8160P,Galaxy Ace2
+kylessopen,Galaxy Ace2 X
+logan,Galaxy Ace3
+logands,Galaxy Ace3
+loganlte,Galaxy Ace3
+loganrelte,Galaxy Ace3
+logan3gcmcc,Galaxy Ace3
+loganu3gcmcc,Galaxy Ace3 Duos
+loganlite3g,Galaxy Ace3 Duos
+logandsdtv,Galaxy Ace3 Duos TV
+vivaltonfc3g,Galaxy Ace4
+vivaltolte,Galaxy Ace4
+vivalto5mve3g,Galaxy Ace4
+vivalto,Galaxy Ace4 Lite
+vivalto3mve3gltn,Galaxy Ace4 Neo
+SCH-R820,Galaxy Admire
+goghcri,Galaxy Admire 2
+sltechn,Galaxy Alpha
+sltecan,Galaxy Alpha
+slte,Galaxy Alpha
+slteskt,Galaxy Alpha
+sltektt,Galaxy Alpha
+slteatt,Galaxy Alpha
+sltelgt,Galaxy Alpha
+kyleatt,Galaxy Amp
+GT-I5800,Galaxy Apollo
+GT-I5801,Galaxy Apollo
+GT-I5800D,Galaxy Apollo
+SGH-I827,Galaxy Appeal
+SCH-R920,Galaxy Attain
+afyonltetmo,Galaxy Avant
+infiniteusc,Galaxy Axiom
+GT-I8530,Galaxy Beam
+GT-I8250,Galaxy Beam
+gd1,Galaxy Camera
+gd1att,Galaxy Camera
+u0lte,Galaxy Camera
+gd1ktt,Galaxy Camera
+gd1can,Galaxy Camera
+gd1wifiany,Galaxy Camera
+gd1wifi,Galaxy Camera
+gd1skt,Galaxy Camera
+gd1ltelgt,Galaxy Camera
+gd1ltevzw,Galaxy Camera
+gd1lteskt,Galaxy Camera
+sf2wifi,Galaxy Camera 2
+amazing3gtrf,Galaxy Centura
+zanin,Galaxy Chat
+afyonlteMetroPCS,Galaxy Core
+arubaslim,Galaxy Core
+afyonltecan,Galaxy Core
+cane3gskt,Galaxy Core Advance
+cane3g,Galaxy Core Advance
+victorlte,Galaxy Core Lite
+cs03lte,Galaxy Core LTE
+afyonlte,Galaxy Core LTE
+kleoslte,Galaxy Core Max
+cs02,Galaxy Core Plus
+cs023g,Galaxy Core Plus
+cs02ve3gdtv,Galaxy Core Plus
+cs02ve3gss,Galaxy Core Plus
+rossalte,Galaxy Core Prime
+rossaltexsa,Galaxy Core Prime
+rossaltectc,Galaxy Core Prime
+core33g,Galaxy Core Prime
+coreprimelte,Galaxy Core Prime
+arubaslimss,Galaxy Core Safe
+kanas3gcmcc,Galaxy Core2
+kanas3gnfc,Galaxy Core2
+kanas3g,Galaxy Core2
+kanas,Galaxy Core2
+kanas3gctc,Galaxy Core2
+amazingtrfcd,Galaxy Discover
+amazing3gcri,Galaxy Discover
+aruba3gcmcc,Galaxy Duos
+e7lte,Galaxy E7
+GT-I5500,Galaxy Europa
+GT-I5510,Galaxy Europa
+GT-I5508,Galaxy Europa
+GT-I5503,Galaxy Europa
+codinavid,Galaxy Exhibit
+codinatmo,Galaxy Exhibit
+codinaMetroPCS,Galaxy Exhibit
+SGH-T679,Galaxy Exhibit2
+SGH-I577,Galaxy Exhilarate
+expresslte,Galaxy Express
+expressziglteatt,Galaxy Express
+expressatt,Galaxy Express
+wilcoxlte,Galaxy Express2
+nevisds,Galaxy Fame
+nevisp,Galaxy Fame
+nevis3g,Galaxy Fame
+nevisvess,Galaxy Fame
+nevis3gcmcc,Galaxy Fame
+nevis,Galaxy Fame
+nevisnvess,Galaxy Fame
+SCH-I629,Galaxy Fame
+nevisw,Galaxy Fame Lite Duos
+GT-S5670,Galaxy Fit
+GT-S5670L,Galaxy Fit
+GT-S5670B,Galaxy Fit
+GT-S5660L,Galaxy Gio
+GT-S5660M,Galaxy Gio
+SHW-M290K,Galaxy Gio
+SHW-M290S,Galaxy Gio
+SCH-i569,Galaxy Gio
+GT-S5660,Galaxy Gio
+GT-S5660B,Galaxy Gio
+GT-S5660V,Galaxy Gio
+ks02lte,Galaxy Golden
+ks02ltektt,Galaxy Golden
+ks02lteskt,Galaxy Golden
+pateklte,Galaxy Golden 2
+baffinvetd3g,Galaxy Grand
+baffinvektt,Galaxy Grand
+baffinltektt,Galaxy Grand
+baffinss,Galaxy Grand
+baffinrd,Galaxy Grand
+baffinveskt,Galaxy Grand
+baffinlteskt,Galaxy Grand
+baffin3gduosctc,Galaxy Grand
+baffincmcc,Galaxy Grand
+baffin,Galaxy Grand duos
+grandmaxltechn,Galaxy Grand Max
+baffinlitedtv,Galaxy Grand Neo
+baffinq3g,Galaxy Grand Neo
+baffinlite,Galaxy Grand Neo
+grandneove3g,Galaxy Grand Neo Plus
+baffinq3gduosctc,Galaxy Grand Neo+
+fortunaltectc,Galaxy Grand Prime
+fortunalte,Galaxy Grand Prime
+fortunaltezh,Galaxy Grand Prime
+fortuna3gdtv,Galaxy Grand Prime
+fortuna3g,Galaxy Grand Prime
+fortunaltezt,Galaxy Grand Prime
+grandprimelte,Galaxy Grand Prime
+grandmaxltekx,Galaxy Grand-Max
+ms013g,Galaxy Grand2
+ms01lte,Galaxy Grand2
+ms01ltelgt,Galaxy Grand2
+ms013gdtv,Galaxy Grand2
+ms013gss,Galaxy Grand2
+ms01lteskt,Galaxy Grand2
+ms01ltektt,Galaxy Grand2
+SCH-R915,Galaxy Indulge
+SCH-R910,Galaxy Indulge
+infinite3gduosctc,Galaxy Infinite
+hltejs01tw,Galaxy J
+j13g,Galaxy J1
+SHW-M130K,Galaxy K
+m2altecan,Galaxy K Zoom
+m2a3g,Galaxy K Zoom
+m2altelgt,Galaxy K Zoom
+m2alte,Galaxy K Zoom
+lucas,Galaxy M Pro2
+vastoicmcc,Galaxy M Style
+SHW-M340L,Galaxy M Style
+SHW-M340S,Galaxy M Style
+mega23g,Galaxy Mega 2
+crater3gctc,Galaxy Mega 5.8
+craterss,Galaxy Mega 5.8
+crater,Galaxy Mega 5.8
+cratertd3g,Galaxy Mega 5.8
+meliusltecan,Galaxy Mega 6.3
+meliuslte,Galaxy Mega 6.3
+meliuslteatt,Galaxy Mega 6.3
+melius3g,Galaxy Mega 6.3
+meliuslteskt,Galaxy Mega 6.3
+meliusltektt,Galaxy Mega 6.3
+meliusltelgt,Galaxy Mega 6.3
+meliusltespr,Galaxy Mega 6.3
+meliuslteusc,Galaxy Mega 6.3
+melius3gduosctc,Galaxy Mega 6.3
+meliuslteMetroPCS,Galaxy Mega 6.3
+craterq3g,Galaxy Mega Plus
+megapluslte,Galaxy Mega Plus
+mega2lteatt,Galaxy Mega2
+mega2lte,Galaxy Mega2
+vastaltezh,Galaxy Mega2
+vastalte,Galaxy Mega2
+vasta3g,Galaxy Mega2
+SGH-T499,Galaxy Mini
+GT-S5570,Galaxy Mini
+SGH-T499Y,Galaxy Mini
+SGH-T499V,Galaxy Mini
+GT-S5570B,Galaxy Mini
+GT-S5570L,Galaxy Mini
+GT-S5570I,Galaxy Mini
+GT-S5578,Galaxy Mini
+GT-S6500,Galaxy Mini2
+GT-S6500D,Galaxy Mini2
+GT-S6500T,Galaxy Mini2
+GT-S6500L,Galaxy Mini2
+ivoryss,Galaxy Music
+ivory,Galaxy Music Duos
+SHW-M220L,Galaxy Neo
+maguro,Galaxy Nexus
+toroplus,Galaxy Nexus
+SHV-E160S,Galaxy Note
+GT-I9220,Galaxy Note
+SHV-E160K,Galaxy Note
+SGH-I717D,Galaxy Note
+GT-I9228,Galaxy Note
+SGH-I717R,Galaxy Note
+SCH-i889,Galaxy Note
+SC-05D,Galaxy Note
+SGH-I717,Galaxy Note
+GT-N7005,Galaxy Note
+GT-N7000,Galaxy Note
+SGH-I717M,Galaxy Note
+SHV-E160L,Galaxy Note
+SGH-T879,Galaxy Note
+p4notewifi43241any,Galaxy Note 10.1
+lt03lteskt,Galaxy Note 10.1
+p4notewifiktt,Galaxy Note 10.1
+p4noteltespr,Galaxy Note 10.1
+p4notewifiany,Galaxy Note 10.1
+p4notewifi,Galaxy Note 10.1
+p4notelteskt,Galaxy Note 10.1
+lt033g,Galaxy Note 10.1
+p4noteltektt,Galaxy Note 10.1
+p4notewifiww,Galaxy Note 10.1
+lt03ltelgt,Galaxy Note 10.1
+p4notelte,Galaxy Note 10.1
+lt03ltektt,Galaxy Note 10.1
+p4notelteusc,Galaxy Note 10.1
+p4noterfktt,Galaxy Note 10.1
+p4noteltevzw,Galaxy Note 10.1
+p4noteltelgt,Galaxy Note 10.1
+p4noterf,Galaxy Note 10.1
+lt03lte,Galaxy Note 10.1 2014 Edition
+lt03wifikx,Galaxy Note 10.1 2014 Edition
+lt03wifiue,Galaxy Note 10.1 2014 Edition
+lt03ltevzw,Galaxy Note 10.1 2014 Edition
+lt03wifi,Galaxy Note 10.1 2014 Edition
+konalteatt,Galaxy Note 8
+kona3g,Galaxy Note 8.0
+konalte,Galaxy Note 8.0
+konawifiany,Galaxy Note 8.0
+konaltecan,Galaxy Note 8.0
+konawifi,Galaxy Note 8.0
+tbltetmo,Galaxy Note Edge
+tbelteskt,Galaxy Note Edge
+tblteusc,Galaxy Note Edge
+tbltespr,Galaxy Note Edge
+tbeltektt,Galaxy Note Edge
+tbltecan,Galaxy Note Edge
+tbltevzw,Galaxy Note Edge
+tblteatt,Galaxy Note Edge
+tbeltelgt,Galaxy Note Edge
+tbltechn,Galaxy Note Edge
+SCL24,Galaxy Note Edge
+tblte,Galaxy Note Edge
+t03g,Galaxy Note II
+v1awifi,Galaxy Note Pro 12.2
+viennaltekx,Galaxy Note Pro 12.2
+v1awifikx,Galaxy Note Pro 12.2
+viennaltevzw,Galaxy Note Pro 12.2
+v1a3g,Galaxy Note Pro 12.2
+viennalte,Galaxy Note Pro 12.2
+viennalteatt,Galaxy Note Pro 12.2
+t03gchnduos,Galaxy Note 2
+SC-02E,Galaxy Note 2
+t03gcuduos,Galaxy Note 2
+t0lte,Galaxy Note 2
+t0ltetmo,Galaxy Note 2
+t0lteatt,Galaxy Note 2
+t0ltespr,Galaxy Note 2
+t03gchn,Galaxy Note 2
+t0ltevzw,Galaxy Note 2
+t0lteskt,Galaxy Note 2
+t0ltelgt,Galaxy Note 2
+t03gcmcc,Galaxy Note2
+t0ltecmcc,Galaxy Note 2
+t03gctc,Galaxy Note 2
+t0lteusc,Galaxy Note2
+t0ltedcm,Galaxy Note 2
+t0ltecan,Galaxy Note 2
+t0ltektt,Galaxy Note 2
+SCL22,Galaxy Note 3
+hltevzw,Galaxy Note 3
+SC-02F,Galaxy Note 3
+hlteskt,Galaxy Note 3
+ha3g,Galaxy Note 3
+hltektt,Galaxy Note 3
+hlteusc,Galaxy Note3
+hltecan,Galaxy Note3
+hltetmo,Galaxy Note3
+hltespr,Galaxy Note 3
+hltelgt,Galaxy Note 3
+hlteatt,Galaxy Note 3
+hlte,Galaxy Note 3
+frescoltelgt,Galaxy Note 3 Neo
+frescolteskt,Galaxy Note 3 Neo
+hllte,Galaxy Note 3 Neo
+hl3g,Galaxy Note 3 Neo
+frescoltektt,Galaxy Note 3 Neo
+hl3gds,Galaxy Note 3 Neo
+trltevzw,Galaxy Note 4
+trhplte,Galaxy Note 4
+trlteusc,Galaxy Note 4
+tre3g,Galaxy Note 4
+tre3caltelgt,Galaxy Note 4
+trltecan,Galaxy Note 4
+treltektt,Galaxy Note 4
+trltetmo,Galaxy Note 4
+trelteskt,Galaxy Note 4
+treltelgt,Galaxy Note 4
+tre3caltektt,Galaxy Note 4
+trltechn,Galaxy Note 4
+trelte,Galaxy Note 4
+trlte,Galaxy Note 4
+trltespr,Galaxy Note 4
+tre3calteskt,Galaxy Note 4
+trltechnzh,Galaxy Note 4
+trlteatt,Galaxy Note 4
+u0lteue,Galaxy NX
+YP-GB70,Galaxy Player
+YP-GS1,Galaxy Player 3.6
+YP-GB1,Galaxy Player 4
+YP-G1,Galaxy Player 4.0
+YP-GI1,Galaxy Player 4.2
+YP-G70,Galaxy Player 5
+harrisonkrlgt,Galaxy Player 5.8
+harrisonkrktt,Galaxy Player 5.8
+harrison,Galaxy Player 5.8
+YP-G50,Galaxy Player 50
+YP-GB70D,Galaxy player 70 Plus
+GT-S5302,Galaxy Pocket
+GT-S5300L,Galaxy Pocket
+GT-S5300B,Galaxy Pocket
+GT-S5300,Galaxy Pocket
+GT-S5302B,Galaxy Pocket
+corsicass,Galaxy Pocket Neo
+d2aio,Galaxy Pocket Neo
+corsica,Galaxy Pocket Neo
+corsicaveds3gvj,Galaxy Pocket Neo
+corsicave3g,Galaxy Pocket Neo
+coriplus,Galaxy Pocket Plus
+pocket2ss3g,Galaxy Pocket2
+pocket23g,Galaxy Pocket2
+superiorlteskt,Galaxy Pop
+SCH-i559,Galaxy Pop (CDMA)
+SCH-M828C,Galaxy Precedent
+superiorcmcc,Galaxy Premier
+superior,Galaxy Premier
+SPH-M820,Galaxy Prevail
+raybst,Galaxy Prevail2
+GT-B7510,Galaxy Pro
+GT-B7510B,Galaxy Pro
+GT-B7510L,Galaxy Pro
+SCH-S720C,Galaxy Proclaim
+SGH-T589W,Galaxy Q
+SGH-T589R,Galaxy Q
+SGH-T589,Galaxy Q
+jaguarl,Galaxy R-Style
+jaguark,Galaxy R-Style
+jaguars,Galaxy R-Style
+iconvmu,Galaxy Reverb
+flteskt,Galaxy Round
+comanchecan,Galaxy Rugby
+comancheatt,Galaxy Rugby Pro
+prevail2spr,Galaxy Rush
+SGH-T959V,Galaxy S
+GT-I9003,Galaxy S
+SHW-M190S,Galaxy S
+SGH-I897,Galaxy S
+GT-I9018,Galaxy S
+GT-I9050,Galaxy S
+SCH-S950C,Galaxy S
+SC-02B,Galaxy S
+GT-I9000T,Galaxy S
+GT-I9008L,Galaxy S
+SCH-i909,Galaxy S
+GT-I9000B,Galaxy S
+GT-I9010,Galaxy S
+GT-I9000M,Galaxy S
+SHW-M110S,Galaxy S
+SCH-I500,Galaxy S
+GT-I9003L,Galaxy S
+SGH-T959W,Galaxy S
+SPH-D700,Galaxy S
+GT-I9000,Galaxy S
+GT-I9070,Galaxy S Advance
+GT-I9070P,Galaxy S Advance
+SCH-R930,Galaxy S Aviator
+SGH-T769,Galaxy S Blaze
+apexqtmo,Galaxy S BlazeQ
+SGH-I896,Galaxy S Captivate
+SCH-I400,Galaxy S Continuum
+kyleopen,Galaxy S Duos
+kylechn,Galaxy S Duos
+kyletdcmcc,Galaxy S Duos
+kyleprods,Galaxy S Duos2
+vivalto3gvn,Galaxy S Duos3
+SGH-T959P,Galaxy S Fascinate
+SGH-I927R,Galaxy S Glide
+SCH-R940,Galaxy S Lightray
+GT-I9001,Galaxy S Plus
+SCH-I405,Galaxy S Stratosphere
+SGH-T959,Galaxy S Vibrant
+SGH-T959D,Galaxy S Vibrant
+SC-02C,Galaxy S2
+SGH-T989,Galaxy S2
+GT-I9108,Galaxy S2
+SHW-M250S,Galaxy S2
+SHW-M250L,Galaxy S2
+GT-I9100M,Galaxy S2
+SHW-M250K,Galaxy S2
+GT-I9210T,Galaxy S2
+GT-I9100,Galaxy S2
+t1cmcc,Galaxy S2
+GT-I9103,Galaxy S2
+GT-I9100P,Galaxy S2
+SGH-I777,Galaxy S2
+SHV-E110S,Galaxy S2
+GT-I9100T,Galaxy S2
+SGH-S959G,Galaxy S2
+SCH-R760X,Galaxy S2
+SCH-i929,Galaxy S2 Duos
+SCH-R760,Galaxy S2 Epic
+SPH-D710VMUB,Galaxy S2 Epic
+SPH-D710BST,Galaxy S2 Epic
+SPH-D710,Galaxy S2 Epic
+SHV-E120S,Galaxy S2 HD LTE
+SHV-E120K,Galaxy S2 HD LTE
+SHV-E120L,Galaxy S2 HD LTE
+SGH-I757M,Galaxy S2 HD LTE
+SC-03D,Galaxy S2 LTE
+SGH-I727R,Galaxy S2 LTE
+GT-I9210,Galaxy S2 LTE
+GT-I9100G,Galaxy S2 Plus
+s2vep,Galaxy S2 Plus
+s2ve,Galaxy S2 Plus
+SGH-I727,Galaxy S2 Skyrocket
+ISW11SC,Galaxy S2 Wimax
+SGH-T989D,Galaxy S2 X
+d2tmo,Galaxy S3
+m0,Galaxy S3
+d2cri,Galaxy S3
+d2usc,Galaxy S3
+m0skt,Galaxy S3
+d2can,Galaxy S3
+SC-03E,Galaxy S3
+m0ctc,Galaxy S3
+d2ltetmo,Galaxy S3
+d2mtr,Galaxy S3
+d2spr,Galaxy S3
+m3dcm,Galaxy S3
+d2vzw,Galaxy S3
+d2att,Galaxy S3
+d2tfnvzw,Galaxy S3
+m0chn,Galaxy S3
+m0apt,Galaxy S3
+m3,Galaxy S3
+d2xar,Galaxy S3
+m0cmcc,Galaxy S3
+m0ctcduos,Galaxy S3
+c1lgt,Galaxy S3
+c1ktt,Galaxy S3
+d2dcm,Galaxy S3
+d2lteMetroPCS,Galaxy S3
+d2spi,Galaxy S3
+d2vmu,Galaxy S3
+c1skt,Galaxy S3
+c1att,Galaxy S3
+d2tfnspr,Galaxy S3
+d2lterefreshspr,Galaxy S3
+goldenltebmc,Galaxy S3 Mini
+goldenltevzw,Galaxy S3 Mini
+golden,Galaxy S3 Mini
+goldenlteatt,Galaxy S3 Mini
+goldenve3g,Galaxy S3 Mini Value Edition
+goldenvess3g,Galaxy S3 Mini Value Edition
+s3ve3gdsdd,Galaxy S3 Neo
+s3ve3gdd,Galaxy S3 Neo
+s3ve3gds,Galaxy S3 Neo
+s3ve3g,Galaxy S3 Neo Plus
+SCL21,Galaxy S3 Progre
+jflteusc,Galaxy S4
+jfltetfntmo,Galaxy S4
+jfltevzw,Galaxy S4
+jaltektt,Galaxy S4
+jalteskt,Galaxy S4
+SC-04E,Galaxy S4
+jflteatt,Galaxy S4
+ja3gduosctc,Galaxy S4
+jflteaio,Galaxy S4
+jaltelgt,Galaxy S4
+ja3g,Galaxy S4
+jfwifi,Galaxy S4
+ks01ltektt,Galaxy S4
+jfltecan,Galaxy S4
+jfltetfnatt,Galaxy S4
+jfltecsp,Galaxy S4
+jflterefreshspr,Galaxy S4
+jflte,Galaxy S4
+jfltespr,Galaxy S4
+jfvelte,Galaxy S4
+jfltelra,Galaxy S4
+ks01lte,Galaxy S4
+ks01ltelgt,Galaxy S4
+jfltetmo,Galaxy S4
+jfltecri,Galaxy S4
+jftdd,Galaxy S4
+jactivelte,Galaxy S4 Active
+jactivelteatt,Galaxy S4 Active
+jactivelteskt,Galaxy S4 Active
+ja3gchnduos,Galaxy S4 Duos
+jgedlte,Galaxy S4 Google Play Edition
+ks01lteskt,Galaxy S4 LTE-A
+serranove3g,Galaxy S4 Mini
+serranoltelra,Galaxy S4 Mini
+serranoltekx,Galaxy S4 Mini
+serranoltevzw,Galaxy S4 Mini
+serranods,Galaxy S4 Mini
+serranoltespr,Galaxy S4 Mini
+serranoltebmc,Galaxy S4 Mini
+serranolteusc,Galaxy S4 Mini
+serranovelte,Galaxy S4 Mini
+serrano3g,Galaxy S4 Mini
+serranolte,Galaxy S4 Mini
+serranovolteatt,Galaxy S4 Mini
+serranoltektt,Galaxy S4 Mini
+mprojectlteskt,Galaxy S4 Zoom
+mprojectltelgt,Galaxy S4 Zoom
+mprojectlteatt,Galaxy S4 Zoom
+mproject3g,Galaxy S4 Zoom
+mprojectqlte,Galaxy S4 Zoom
+kltespr,Galaxy S5
+klteskt,Galaxy S5
+klte,Galaxy S5
+klteMetroPCS,Galaxy S5
+klteatt,Galaxy S5
+k3g,Galaxy S5
+klteacg,Galaxy S5
+SCL23,Galaxy S5
+klteusc,Galaxy S5
+lentisltektt,Galaxy S5
+lentisltelgt,Galaxy S5
+kltelra,Galaxy S5
+klteaio,Galaxy S5
+kwifi,Galaxy S5
+kltecan,Galaxy S5
+lentislteskt,Galaxy S5
+kltevzw,Galaxy S5
+kltetmo,Galaxy S5
+kltelgt,Galaxy S5
+klteduoszn,Galaxy S5
+kltektt,Galaxy S5
+klteactive,Galaxy S5 Active
+klteattactive,Galaxy S5 Active
+kltecanactive,Galaxy S5 Active
+kgedlte,Galaxy S5 Google Play Edition
+kltesprsports,Galaxy S5 K Sport
+kccat6,Galaxy S5 LTE-A
+kminilteatt,Galaxy S5 Mini
+kminiwifi,Galaxy S5 Mini
+kmini3g,Galaxy S5 Mini
+zerofltexx,Galaxy S6
+zeroltexx,Galaxy S6 Edge
+herolte,Galaxy S7
+hero2lte,Galaxy S7 Edge
+kminilte,Galaxy S8
+kminilte,Galaxy S8 Plus
+starlte,Galaxy S9
+star2lte,Galaxy S9 Plus
+spica,Galaxy Spica
+GT-I5700L,Galaxy Spica
+GT-I5700,Galaxy Spica
+mint,Galaxy Star
+mintss,Galaxy Star
+logan2g,Galaxy Star Plus
+mintts,Galaxy Star Trios
+higgs2g,Galaxy Star2 Plus
+jaspervzw,Galaxy Stellar
+aruba3gduosctc,Galaxy Style Duos
+SHW-M180S,Galaxy Tab
+GT-P1010,Galaxy Tab
+SCH-I800,Galaxy Tab
+GT-P1000,Galaxy Tab
+GT-P1000T,Galaxy Tab
+SHW-M180K,Galaxy Tab
+GT-P1000L,Galaxy Tab
+GT-P1000R,Galaxy Tab
+SHW-M180L,Galaxy Tab
+GT-P1000N,Galaxy Tab
+SGH-T849,Galaxy Tab
+GT-P1013,Galaxy Tab
+SHW-M180W,Galaxy Tab
+SMT-i9100,Galaxy Tab
+GT-P1000M,Galaxy Tab
+SC-01C,Galaxy Tab
+SHW-M300W,Galaxy Tab 10.1
+SHW-M380S,Galaxy Tab 10.1
+SCH-I905,Galaxy Tab 10.1
+GT-P7500D,Galaxy Tab 10.1
+SHW-M380W,Galaxy Tab 10.1
+SC-01D,Galaxy Tab 10.1
+SHW-M380K,Galaxy Tab 10.1
+SGH-T859,Galaxy Tab 10.1
+GT-P7503,Galaxy Tab 10.1
+GT-P7500,Galaxy Tab 10.1
+GT-P7501,Galaxy Tab 10.1 N
+GT-P7511,Galaxy Tab 10.1 N
+p3,Galaxy Tab 10.1 v
+milletwifikx,Galaxy Tab 4 8.0
+SPH-P100,Galaxy Tab 7.0
+GT-P6200,Galaxy Tab 7.0 Plus
+SC-02D,Galaxy Tab 7.0 Plus
+GT-P6201,Galaxy Tab 7.0 Plus
+GT-P6211,Galaxy Tab 7.0 Plus
+SHW-M430W,Galaxy Tab 7.0 Plus
+SGH-T869,Galaxy Tab 7.0 Plus
+GT-P6200L,Galaxy Tab 7.0 Plus
+GT-P6210,Galaxy Tab 7.0 Plus
+GT-P6800,Galaxy Tab 7.7
+SCH-I815,Galaxy Tab 7.7
+GT-P6810,Galaxy Tab 7.7
+SC-01E,Galaxy Tab 7.7 Plus
+SHV-E140K,Galaxy Tab 8.9
+SGH-I957D,Galaxy Tab 8.9
+SGH-I957M,Galaxy Tab 8.9
+SHV-E140S,Galaxy Tab 8.9
+SGH-I957,Galaxy Tab 8.9
+SCH-P739,Galaxy Tab 8.9
+GT-P7310,Galaxy Tab 8.9
+SHV-E140L,Galaxy Tab 8.9
+GT-P7320,Galaxy Tab 8.9
+SGH-I957R,Galaxy Tab 8.9
+SHW-M305W,Galaxy Tab 8.9
+GT-P7300,Galaxy Tab 8.9
+picassowifi,Galaxy Tab Pro 10.1
+picassolte,Galaxy Tab Pro 10.1
+picassowificc,Galaxy Tab Pro 10.1 Chef Collection
+v2wifi,Galaxy Tab Pro 12.2
+v2lte,Galaxy Tab Pro 12.2
+mondrianwifiue,Galaxy Tab Pro 8.4
+mondrianlte,Galaxy Tab Pro 8.4
+mondrianwifikx,Galaxy Tab Pro 8.4
+q7,Galaxy Tab Q
+chagallwifi,Galaxy Tab S 10.5
+SC-03G,Galaxy Tab S 8.4
+klimtltevzw,Galaxy Tab S 8.4
+espresso10wifi,Galaxy Tab2 10.1
+espresso10rf,Galaxy Tab2 10.1
+espresso10spr,Galaxy Tab2 10.1
+espresso10tmo,Galaxy Tab2 10.1
+espresso10vzw,Galaxy Tab2 10.1
+espresso10can,Galaxy Tab2 10.1
+espresso10att,Galaxy Tab2 10.1
+espressowifi,Galaxy Tab2 7.0
+espressorf,Galaxy Tab2 7.0
+espressovzw,Galaxy Tab2 7.0
+lt01wifikx,Galaxy Tab3
+santos10wifi,Galaxy Tab3 10.1
+santos103g,Galaxy Tab3 10.1
+santos10lte,Galaxy Tab3 10.1
+lt023gdtv,Galaxy Tab3 7.0
+lt02lte,Galaxy Tab3 7.0
+lt02wifi,Galaxy Tab3 7.0
+lt02ltetmo,Galaxy Tab3 7.0
+lt02wifilgt,Galaxy Tab3 7.0
+lt02lteatt,Galaxy Tab3 7.0
+lt023g,Galaxy Tab3 7.0
+lt02ltespr,Galaxy Tab3 7.0
+lt01wifi,Galaxy Tab3 8.0
+lt01lte,Galaxy Tab3 8.0
+lt013g,Galaxy Tab3 8.0
+lt02lduwifi,Galaxy Tab3 8.0
+lt02kidswifi,Galaxy Tab3 Kids
+goyawifi,Galaxy Tab3 Lite
+goya3g,Galaxy Tab3 Lite
+goyavewifixtc,Galaxy Tab3V 7.0
+goyave3gsea,Galaxy Tab3V 7.0
+matissewifigoogle,Galaxy Tab4
+matisselte,Galaxy Tab4 10.0
+matisseltevzw,Galaxy Tab4 10.0
+matisse3g,Galaxy Tab4 10.0
+matisselteatt,Galaxy Tab4 10.0
+matisselteusc,Galaxy Tab4 10.0
+matissewifi,Galaxy Tab4 10.1
+matissewifikx,Galaxy Tab4 10.1
+matissewifiue,Galaxy Tab4 10.1
+degas3g,Galaxy Tab4 7.0
+degaswifiue,Galaxy Tab4 7.0
+degaswifidtv,Galaxy Tab4 7.0
+403SC,Galaxy Tab4 7.0
+degaswifi,Galaxy Tab4 7.0
+degaswifiopenbnn,Galaxy Tab4 7.0
+degaslte,Galaxy Tab4 7.0
+degasltevzw,Galaxy Tab4 7.0
+degasltespr,Galaxy Tab4 7.0
+milletlteatt,Galaxy Tab4 8.0
+milletltevzw,Galaxy Tab4 8.0
+milletltetmo,Galaxy Tab4 8.0
+milletwifiue,Galaxy Tab4 8.0
+milletwifi,Galaxy Tab4 8.0
+milletltelgt,Galaxy Tab4 8.0
+milletltektt,Galaxy Tab4 8.0
+milletlte,Galaxy Tab4 8.0
+millet3g,Galaxy Tab4 8.0
+rubenswifi,Galaxy Tab4 Active
+rubenslte,Galaxy Tab4 Active
+matissewifiopenbnn,Galaxy Tab4 Nook 10.1
+chagalllteatt,Galaxy TabS 10.5
+chagallhltektt,Galaxy TabS 10.5
+chagallltespr,Galaxy TabS 10.5
+chagallhlteskt,Galaxy TabS 10.5
+chagallhltelgt,Galaxy TabS 10.5
+chagallltevzw,Galaxy TabS 10.5
+chagalllteusc,Galaxy TabS 10.5
+SCT21,Galaxy TabS 10.5
+chagallltetmo,Galaxy TabS 10.5
+chagallltecan,Galaxy TabS 10.5
+chagallwifikx,Galaxy TabS 10.5
+chagalllte,Galaxy TabS 10.5
+klimtlte,Galaxy TabS 8.4
+klimtltecan,Galaxy TabS 8.4
+klimtlteatt,Galaxy TabS 8.4
+klimtwifi,Galaxy TabS 8.4
+klimtwifikx,Galaxy TabS 8.4
+mondrianwifi,Galaxy Tap Pro 8.4
+kyleve,Galaxy Trend
+kyleve3gcmcc,Galaxy Trend
+kylepluschn,Galaxy Trend Duos
+kyleichn,Galaxy Trend Duos
+kylevess,Galaxy Trend Lite
+kylepro,Galaxy Trend Plus
+garda3gcmcc,Galaxy Trend2
+gardave3gcmcc,Galaxy Trend2
+kyleplusctc,Galaxy Trend2
+cs02ctc,Galaxy Trend3
+cs02ve,Galaxy Trend3
+cs02ve3g,Galaxy Trend3
+cs02cmcc,Galaxy Trend3
+SHW-M130L,Galaxy U
+goghvmu,Galaxy Victory
+goghspr,Galaxy Victory
+GT-I8150,Galaxy W
+GT-I8150T,Galaxy W
+GT-I8150B,Galaxy W
+SGH-T679M,Galaxy W
+deloslteskt,Galaxy Win
+delos3gss,Galaxy win
+delos3geur,Galaxy Win
+delosltelgt,Galaxy Win
+delos3gduosctc,Galaxy Win
+delos3gcmcc,Galaxy Win
+delos3gchn,Galaxy Win Duos
+wilcoxds,Galaxy Win Pro
+wilcoxctc,Galaxy Win Pro
+wilcox3g,Galaxy Win Pro
+coreprimeltedtv,Galaxy Win2
+GT-S5690R,Galaxy Xcover
+GT-S5690M,Galaxy Xcover
+GT-S5690L,Galaxy Xcover
+GT-S5690,Galaxy Xcover
+skomer,Galaxy Xcover2
+GT-S5368,Galaxy Y
+GT-S5360T,Galaxy Y
+GT-S5369,Galaxy Y
+SCH-i509,Galaxy Y
+SCH-I509,Galaxy Y
+GT-S5363,Galaxy Y
+GT-S5360B,Galaxy Y
+GT-S5360,Galaxy Y
+GT-S5360L,Galaxy Y
+GT-S6102B,Galaxy Y Duos
+GT-S6102,Galaxy Y Duos
+GT-S6102E,Galaxy Y Duos
+coriplusds,Galaxy Y Plus
+GT-S6108,Galaxy Y Pop
+GT-B5510B,Galaxy Y Pro
+GT-B5510L,Galaxy Y Pro
+GT-B5510,Galaxy Y Pro
+GT-B5512B,Galaxy Y Pro Duos
+GT-B5512,Galaxy Y Pro Duos
+GT-S5367,Galaxy Y TV
+roydtv,Galaxy Young
+royssdtv,Galaxy Young
+roy,Galaxy Young
+royssnfc,Galaxy Young
+royss,Galaxy Young
+young2nfc3g,Galaxy Young2
+young23g,Galaxy Young2
+young23gdtv,Galaxy Young2
+young2ds2g,Galaxy Young2
+gardalteMetroPCS,Garda
+sprat,Gear Live
+SCH-I100,Gem
+ironcmcc,GT-B9388
+GT-I5510M,GT-I5510M
+GT-I5510T,GT-I5510T
+GT-I5800L,GT-I5800L
+aruba3gchn,GT-I8262D
+superiorchn,GT-I9260
+GT-N7000B,GT-N7000B
+espressorfcmcc,GT-P3108
+GT-P7300B,GT-P7300B
+GT-P7320T,GT-P7320T
+GT-P7500M,GT-P7500M
+GT-P7500R,GT-P7500R
+GT-P7500V,GT-P7500V
+GT-S5698,GT-S5698
+GT-S5820,GT-S5820
+GT-S5830V,GT-S5830V
+hennessy3gduosctc,Hennessy
+spcwifi,Homesync
+gokey,IceTouch
+SCH-I110,Illusion
+SGH-I997,Infuse
+SGH-I997R,Infuse
+sph-m900,Moment
+SPH-M900,Moment
+montblanc3gctc,Montblanc
+ik1,Olleh
+SPH-M580,Replenish
+SPH-M580BST,Replenish
+SCH-R680,Repp
+royvedtv,Roy VE DTV
+royssvedtv,Roy VE DTV
+SGH-I847,Rugby Smart
+jflteMetroPCS,Samsung Galaxy S4
+mprojectltektt,Samsung Galaxy S4 Zoom
+aegis2vzw,Samsung Galaxy Stratosphere2
+gardaltetmo,Samsung Garda
+spcwifiany,Samsung Homesync
+SC-01F,SC-01F
+SC-01G,SC-01G
+SC-02G,SC-02G
+SC-04F,SC-04F
+SCH-I339,SCH-I339
+SCH-I405U,SCH-I405U
+godivaltevzw,SCH-I425
+SCH-I519,SCH-I519
+SCH-I559,SCH-I559
+SCH-I659,SCH-I659
+SCH-I699,SCH-I699
+SCH-I779,SCH-I779
+SCH-i809,SCH-i809
+SCH-i919,SCH-i919
+SCH-I919U,SCH-I919U
+m0grandectc,SCH-W2013
+SCH-W899,SCH-W899
+SCH-W999,SCH-W999
+SGH-I987,SGH-I987
+amazingtrf,SGH-S730G
+SHV-E150S,SHV-E150S
+SHW-M115S,SHW-M115S
+SHW-M135K,SHW-M135K
+SHW-M135L,SHW-M135L
+SHW-M340D,SHW-M340D
+SHW-M340K,SHW-M340K
+SHW-M460D,SHW-M460D
+p4noterfskt,SHW-M480S
+SGH-T839,Sidekick
+htdlte,SM-N9007
+lt03ltetmo,SM-P607T
+q7lteskt,SM-T255S
+stunnerltespr,SPH-L500
+SCH-R730,Transfix
+SPH-M920,Transform
+SPH-M930,Transform Ultra
+SPH-M930BST,Transform Ultra
+SPH-M910,VinsQ

@@ -6,6 +6,6 @@ data class NetworkReport(
     @SerializedName("Network level")var level: Int,
     @SerializedName("Data status")var dataStatus: Int,
     @SerializedName("Sim state")var simState: Int,
-    @SerializedName("GPS state")var GPS: Int,
+    @SerializedName("GPS state")var GPS: Boolean,
     @SerializedName("bluetooth")var bluetooth: Boolean
 )

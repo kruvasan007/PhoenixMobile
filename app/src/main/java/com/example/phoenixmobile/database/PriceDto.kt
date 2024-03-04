@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey
 data class PriceDto(
     @PrimaryKey(autoGenerate = true)
     val id: Int ?= 0,
-    @ColumnInfo(name = "brand") var brand: String,
     @ColumnInfo(name = "model") var model: String,
-    @ColumnInfo(name = "price") var price: Int
+    @ColumnInfo(name = "price") var price: Double
 )

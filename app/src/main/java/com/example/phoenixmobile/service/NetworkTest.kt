@@ -17,58 +17,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.phoenixmobile.data.Repository
 
+
 class NetworkTest : Service() {
+    private val TAG = "Bluetooth"
     private var level: Int = -1
     private var simState: Int = -1
     private var dataState: Int = -1
     private var connected = false
+    private var mGPS = false
+
     private fun checkConnected() {
         val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        val permissionCheck = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            ContextCompat.checkSelfPermission(
-                applicationContext, Manifest.permission.BLUETOOTH_CONNECT
-            )
-        } else {
-            Log.d("NETWORK","Error: SDK version error")
-        }
-        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+        if (androidx.core.app.ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.BLUETOOTH_CONNECT
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             if (mBluetoothAdapter.isEnabled) {
                 connected = true
             }
-            Log.d("BLUETOOTH", mBluetoothAdapter.bondedDevices.toString())
-            /*try {
-                try {
-                    val m = device.javaClass.getMethod(
-                        "createRfcommSocket", *arrayOf<Class<*>?>(
-                            Int::class.javaPrimitiveType
-                        )
-                    )
-                    try {
-                        val bs = m.invoke(device, Integer.valueOf(1)) as BluetoothSocket
-                        bs.connect()
-                        connected = true
-                        Log.d("BLUETOOTH", device.name + " - connected")
-                        break
-                    } catch (e: IOException) {
-                        Log.e("BLUETOOTH", "IOException: " + e.localizedMessage)
-                        Log.d("BLUETOOTH", device.name + " - not connected")
-                    }
-                } catch (e: IllegalArgumentException) {
-                    Log.e("BLUETOOTH", "IllegalArgumentException: " + e.localizedMessage)
-                } catch (e: IllegalAccessException) {
-                    Log.e("BLUETOOTH", "IllegalAccessException: " + e.localizedMessage)
-                } catch (e: InvocationTargetException) {
-                    Log.e("BLUETOOTH", "InvocationTargetException: " + e.localizedMessage)
-                }
-            } catch (e: SecurityException) {
-                Log.e("BLUETOOTH", "SecurityException: " + e.localizedMessage)
-            } catch (e: NoSuchMethodException) {
-                Log.e("BLUETOOTH", "NoSuchMethodException: " + e.localizedMessage)
-            }
-        }*/
         }
     }
-
 
     @RequiresApi(Build.VERSION_CODES.R)
     private fun checkNetworkState() {
@@ -98,7 +66,7 @@ class NetworkTest : Service() {
             val mLocationManager =
                 applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             // Checking GPS is enabled
-            val mGPS = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            mGPS = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
             // Display the message into the string
             Log.d("GPS", mGPS.toString())
         }
@@ -136,14 +104,16 @@ class NetworkTest : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        //checkConnected()
-        checkGpsStatus()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            checkNetworkState()
+        Repository.getReportState().observeForever {
+            if (it == Repository.REPORT_STARTED) {
+                checkGpsStatus()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    checkNetworkState()
+                }
+                checkConnected()
+                Repository.setNetworkReport(level, dataState, simState, mGPS, connected)
+            }
         }
-        checkConnected()
-
-        Repository.setNetworkReport(level, dataState, simState, 0, connected)
         return super.onStartCommand(intent, flags, startId)
     }
 

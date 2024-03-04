@@ -1,5 +1,6 @@
 package com.example.phoenixmobile.service
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -16,6 +17,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.IBinder
 import android.os.StatFs
+import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -32,6 +34,7 @@ class HardWareCheck : Service(), SensorEventListener {
     private var totalSpace = 0L
     private var avalSpace = 0L
     private var batteryStatus = -1
+    private var batteryCycleCount = -1
     private lateinit var observer: Observer<ArrayList<Float>>
     private val listen: MutableLiveData<ArrayList<Float>> = MutableLiveData()
     private val NS2S = 1.0f / 1000000000.0f
@@ -41,7 +44,8 @@ class HardWareCheck : Service(), SensorEventListener {
         val receiver: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 batteryStatus = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
-                Log.d("BATTERY", getStatus(batteryStatus))
+                batteryCycleCount = intent.getIntExtra(BatteryManager.EXTRA_CYCLE_COUNT, -1)
+                Log.d("BATTERY", getStatus(batteryStatus) + " " + batteryCycleCount)
                 application.unregisterReceiver(this)
                 Repository.setBatteryReport(batteryStatus)
             }
@@ -131,34 +135,49 @@ class HardWareCheck : Service(), SensorEventListener {
         Repository.setMemoryReport(totalRam, totalSpace, avalSpace)
     }
 
+    @SuppressLint("HardwareIds")
     private fun checkOS() {
+        val bootloader = Build.BOOTLOADER
+        val display = Build.DISPLAY
+        val deviceId = Settings.Secure.getString(
+            applicationContext.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
         val phoneModel = Build.MODEL
         val versionOS = Build.VERSION.RELEASE
         val sdkVersion = Build.VERSION.SDK_INT
         val hardware = Build.HARDWARE;
         val board = Build.BOARD;
+
+        Repository.setOSReport(
+            "versionOS:$versionOS; sdk:$sdkVersion; " +
+                    "model:$phoneModel; hardware:$hardware; boardModel:$board; " +
+                    "bootloader:$bootloader; display:$display; imei:$deviceId"
+        )
+
         Log.d(
             "SYSTEM",
-            "$versionOS version OS, $sdkVersion sdk, $phoneModel, $hardware hardware, $board board model \n\n"
+            "versionOS:$versionOS; sdk:$sdkVersion; " +
+                    "model:$phoneModel; hardware:$hardware; boardModel:$board; " +
+                    "bootloader:$bootloader; display:$display; imei:$deviceId"
         )
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("HARDWARE", "Start checking")
-        checkBattery()
-        checkOS()
-        checkMemory()
-        checkGyroscope()
+        Repository.getReportState().observeForever {
+            if (it == Repository.REPORT_STARTED) {
+                flagGyroscope = false
+                checkBattery()
+                checkOS()
+                checkMemory()
+                checkGyroscope()
+            }
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onBind(intent: Intent?): IBinder {
         Log.d("HARDWARE", "Bind")
         return Binder()
-    }
-
-    override fun stopService(name: Intent?): Boolean {
-        println("Stop HW")
-        return super.stopService(name)
     }
 }

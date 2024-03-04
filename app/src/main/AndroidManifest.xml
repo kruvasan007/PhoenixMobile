@@ -8,6 +8,9 @@
         android:name="android.permission.BLUETOOTH"
         android:required="false" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" android:required="true" />
@@ -42,19 +45,19 @@
         <service
             android:name=".service.NetworkTest"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".service.CPUTest"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".service.HardWareCheck"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".service.AudioTest"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
     </application>
 
 </manifest>

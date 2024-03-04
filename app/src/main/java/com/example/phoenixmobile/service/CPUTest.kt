@@ -67,19 +67,20 @@ class CPUTest : Service() {
         } catch (ex: IOException) {
             ex.printStackTrace()
         }
-
         Log.d("CPU", frequency)
-
         Repository.setCPUReport(frequency, score)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        checkProcessor()
+        Repository.getReportState().observeForever {
+            if (it == Repository.REPORT_STARTED) {
+                checkProcessor()
+            }
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
     }
-
 }
