@@ -241,9 +241,8 @@ object Repository {
             "Audio System",
             state
         )
-        testList.postValue(testList.value)
-
         audioTest.postValue(state)
+        testList.postValue(testList.value)
     }
 
     fun insertPriceTable(priceItem: PriceDto) {

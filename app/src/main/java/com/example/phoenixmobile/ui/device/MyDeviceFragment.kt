@@ -174,17 +174,17 @@ class MyDeviceFragment : Fragment() {
                         myDialog = MaterialAlertDialogBuilder(
                             requireContext(),
                             com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
-                        ).apply {
-                            setMessage("Does the recorded sound match the sample?")
-                            setNegativeButton("No") { dialog, which ->
+                        )
+                            .setMessage("Does the recorded sound match the sample?")
+                            .setNegativeButton("No") { dialog, which ->
                                 viewModel.setAudioReply(false)
                             }
-                            setPositiveButton("Yes") { dialog, which ->
+                            .setPositiveButton("Yes") { dialog, which ->
+                                println("TYPE TRUE")
                                 viewModel.setAudioReply(true)
                             }
-                            setCancelable(false)
-                        }.create()
-                        myDialog!!.show()
+                            .setCancelable(false)
+                            .show()
                     }
                 }
 
