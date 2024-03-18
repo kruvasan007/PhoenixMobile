@@ -13,8 +13,6 @@ import java.security.NoSuchAlgorithmException
 
 class CPUTest : Service() {
     private lateinit var hashValue: String
-    private val NS2S = 1.0f / 1000000000.0f
-    private var timestamp: Float = 0f
     private fun computeSHAHash(password: String) {
         var mdSha1: MessageDigest? = null
         try {
@@ -75,6 +73,9 @@ class CPUTest : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Repository.getReportState().observeForever {
             if (it == Repository.REPORT_STARTED) {
+                // This test loads the processing power of the processor and puts a
+                // relative score where a score of 6-8 is very good and the higher
+                // the value, the worse (for example, 26 is an old phone)
                 checkProcessor()
             }
         }

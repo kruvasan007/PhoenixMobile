@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.phoenixmobile.R
 import com.example.phoenixmobile.data.Repository
 import com.example.phoenixmobile.database.PriceDto
+import com.example.phoenixmobile.model.Graphic
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,9 +20,11 @@ import java.util.TreeMap
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     private val _priceList = Repository.getPriceList()
     private val priceTable = MutableLiveData<TreeMap<String, Double>>()
+    private val graphic = MutableLiveData<Graphic>()
 
     init {
         loadPriceList()
+        loadGraphicsList()
     }
 
     private fun convertPriceList() {
@@ -34,9 +38,27 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun getPriceList() = priceTable
+    fun getGraphicsData(id: Int) = graphic
+
+    @SuppressLint("ResourceType")
+    private fun loadGraphicsList() {
+        //TODO: get data from server
+        GlobalScope.launch(Dispatchers.IO) {
+            val inputStreamReader = InputStreamReader(
+                getApplication<Application>().resources.openRawResource(
+                    R.raw.graphics_pattern
+                )
+            )
+            val jsonInput = inputStreamReader.readText()
+            val gson = Gson()
+            graphic.postValue(gson.fromJson(jsonInput, Graphic::class.java))
+        }
+        convertPriceList()
+    }
 
     @SuppressLint("ResourceType")
     private fun loadPriceList() {
+        //TODO: get data from server
         GlobalScope.launch(Dispatchers.IO) {
             val inputStreamReader = InputStreamReader(
                 getApplication<Application>().resources.openRawResource(

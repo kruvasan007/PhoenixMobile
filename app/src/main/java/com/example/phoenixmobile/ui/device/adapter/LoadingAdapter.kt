@@ -12,6 +12,8 @@ import java.util.TreeMap
 
 class LoadingAdapter(private var testList: TreeMap<String, Int>) :
     RecyclerView.Adapter<LoadingAdapter.MyViewHolder>() {
+
+        // This adapter is designed to display the current report collection process
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val inflatedView: View = layoutInflater.inflate(R.layout.check_item, parent, false)
@@ -37,6 +39,7 @@ class LoadingAdapter(private var testList: TreeMap<String, Int>) :
 
         @SuppressLint("ResourceAsColor")
         fun bind(test: Pair<String, Int>) {
+            // checking the status of this report item
             name.isChecked =
                 test.second == Repository.REPORT_DONE || test.second == Repository.AUDIO_CHECK_DONE
             if (test.second == Repository.REPORT_ERROR)

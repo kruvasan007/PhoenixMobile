@@ -29,32 +29,41 @@ import kotlin.math.sqrt
 class HardWareTest : Service(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var flagGyroscope = false
-    private val STEP_MAX_MAGNITUDE_GYRO = 2.5
+
+    // sensitivity for gyroscope test
+    private val STEP_MAX_MAGNITUDE_GYRO = 2.0
+
+    // data for memory collection
     private var totalRam = 0L
     private var totalSpace = 0L
     private var avalSpace = 0L
+
+    // for battery test
     private var batteryStatus = -1
     private var batteryCycleCount = -1
+
+    //for gyro test
     private lateinit var observer: Observer<ArrayList<Float>>
     private val listen: MutableLiveData<ArrayList<Float>> = MutableLiveData()
     private val NS2S = 1.0f / 1000000000.0f
     private var timestamp: Float = 0f
 
     fun checkBattery() {
+
         val receiver: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 batteryStatus = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
                 batteryCycleCount = intent.getIntExtra(BatteryManager.EXTRA_CYCLE_COUNT, -1)
-                Log.d("BATTERY", getStatus(batteryStatus) + " " + batteryCycleCount)
+                Log.d("BATTERY", getStringStatus(batteryStatus) + " " + batteryCycleCount)
                 application.unregisterReceiver(this)
                 Repository.setBatteryReport(batteryStatus)
             }
         }
         application.registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+
     }
 
-
-    fun getStatus(status: Int): String {
+    fun getStringStatus(status: Int): String {
         val statusStr = when (status) {
             BatteryManager.BATTERY_HEALTH_DEAD -> "BATTERY DEAD"
             BatteryManager.BATTERY_HEALTH_COLD -> "BATTERY COLD"
@@ -79,6 +88,7 @@ class HardWareTest : Service(), SensorEventListener {
             )
             listen.setValue(ArrayList())
             observer = Observer { data ->
+                // if the delta of the values is greater than the specified accuracy
                 if (data.size > 2) {
                     if (data.max() > STEP_MAX_MAGNITUDE_GYRO) {
                         flagGyroscope = true
@@ -89,6 +99,8 @@ class HardWareTest : Service(), SensorEventListener {
             }
             listen.observeForever(observer)
         } else {
+            flagGyroscope = false
+            Repository.setGyroscopeReport(flagGyroscope)
             Log.d("GYRO", "No gyroscope")
         }
     }
@@ -100,11 +112,9 @@ class HardWareTest : Service(), SensorEventListener {
             val axisY: Float = event.values[1]
             val axisZ: Float = event.values[2]
             val omegaMagnitude: Float = sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ)
-            val thetaOverTwo: Float = omegaMagnitude * dT / 2.0f
-
+            //val thetaOverTwo: Float = omegaMagnitude * dT / 2.0f
             listen.value!!.add(omegaMagnitude)
             listen.postValue(listen.value)
-            //Log.d("GYRO", omegaMagnitude.toString())
             if (flagGyroscope) {
                 listen.removeObserver(observer)
             }
@@ -121,6 +131,7 @@ class HardWareTest : Service(), SensorEventListener {
         val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo);
         totalRam = memoryInfo.totalMem / (1024 * 1024 * 1024);
+
         val iPath: File = Environment.getDataDirectory()
         val iStat = StatFs(iPath.path)
         val iBlockSize = iStat.blockSizeLong

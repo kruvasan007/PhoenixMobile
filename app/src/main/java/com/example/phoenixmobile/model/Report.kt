@@ -1,6 +1,7 @@
 package com.example.phoenixmobile.model
 
 data class Report(
+    // data class for send to server
     val deviceId: String? = null,
     val aboutDevice: String? = null,
     val cpuReport: CPUReport? = null,

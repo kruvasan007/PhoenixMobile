@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_mydevice, R.id.navigation_search
             )
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

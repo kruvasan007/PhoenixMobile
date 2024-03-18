@@ -19,7 +19,7 @@ import java.util.TreeMap
 
 
 class MyDeviceViewModel(application: Application) : AndroidViewModel(application) {
-    private val TIMEOUT_DURATION: Long = 150
+    private val TIMEOUT_DURATION: Long = 50
     private var testList = Repository.getTestList()
     private var audioTestState = Repository.getAudioTest()
     private var reportState = Repository.getReportState()
@@ -80,8 +80,14 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun getReportPrice(): Float {
+        val answ = Repository.getReportAnswer()
+        return answ.price
+    }
+
     fun startCheck() {
         Repository.setReportStarted()
+        // setup time to generate report
         viewModelScope.launch {
             timerFlow(TIMEOUT_DURATION).collect { time ->
                 if (time == 0L) {
@@ -92,7 +98,7 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
                     this.cancel()
                     Log.d("TIMER", "Stopped with done")
                 }
-                println(time)
+            //println(time)
             }
         }
         viewModelScope.launch {

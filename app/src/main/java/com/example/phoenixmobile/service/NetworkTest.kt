@@ -19,7 +19,6 @@ import com.example.phoenixmobile.data.Repository
 
 
 class NetworkTest : Service() {
-    private val TAG = "Bluetooth"
     private var level: Int = -1
     private var simState: Int = -1
     private var dataState: Int = -1

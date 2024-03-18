@@ -24,7 +24,9 @@ class AudioTest : Service() {
     private var mediaRecorder: MediaRecorder? = null
     private var fileName: String = ""
     private var isRecording = false
+    // the player of the recording
     private var mediaPlayer: MediaPlayer? = null
+    // the player of the source recording
     private var mediaPlayerSource: MediaPlayer? = null
 
     private fun isConnected(device: BluetoothDevice): Boolean {
@@ -46,6 +48,8 @@ class AudioTest : Service() {
     fun startMediaRecorder() {
         try {
             releaseRecorder()
+
+            //create out file "temp.wav" in internal storage
             val outFile = File(
                 applicationContext.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
                 "temp.wav"
@@ -53,6 +57,7 @@ class AudioTest : Service() {
             if (outFile.exists()) {
                 outFile.delete()
             }
+            // create recorder
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 mediaRecorder = MediaRecorder(applicationContext).apply {
                     setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -121,6 +126,7 @@ class AudioTest : Service() {
 
         createMediaPlayerSource()
         Repository.getReportState().observeForever {
+            // check the current recording status - is it at the recording stage
             if (it == Repository.REPORT_STARTED && !isRecording) {
                 startChecking()
             }
@@ -131,6 +137,8 @@ class AudioTest : Service() {
 
     private fun startChecking() {
         Repository.setAudioResponse(Repository.AUDIO_CHECK_STARTED)
+
+        // checking connected Bluetooth devices
         var checkBluetoothConnected = false
         val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if (androidx.core.app.ActivityCompat.checkSelfPermission(
@@ -151,6 +159,7 @@ class AudioTest : Service() {
         else
             Repository.setBluetoothDisconnected()
 
+        // listener of the audio playback preparation state
         Repository.getBluetoothFlag().observeForever {
             if (it) {
                 Repository.setAudioResponse(Repository.AUDIO_CHECK_START_PLAYING)
@@ -160,18 +169,24 @@ class AudioTest : Service() {
     }
 
     private fun runTest() {
+
+        // we get the record
         val dir =
             File(
                 applicationContext.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
                 "temp.wav"
             )
         fileName = dir.absolutePath
+
+
         val audioManager =
             application.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         audioManager.adjustVolume(
             AudioManager.ADJUST_UNMUTE,
             AudioManager.FLAG_PLAY_SOUND
         )
+
+        // timer for sample playback and recording
         object : CountDownTimer(4000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 if (millisUntilFinished > 3500L) {
@@ -190,6 +205,7 @@ class AudioTest : Service() {
     }
 
     private fun startTimerToPlayRecord() {
+        // timer for playing a recorded sample
         object : CountDownTimer(3000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 if (millisUntilFinished > 2500L) {

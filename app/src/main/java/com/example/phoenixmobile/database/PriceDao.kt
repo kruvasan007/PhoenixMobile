@@ -6,6 +6,7 @@ import androidx.room.Query
 
 @Dao
 interface PriceDao {
+    //create all the necessary methods to access the database
     @Query("SELECT * FROM pricetable")
     fun getAll(): List<PriceDto>
 

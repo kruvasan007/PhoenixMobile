@@ -9,6 +9,7 @@ import com.example.phoenixmobile.model.DisplayReport
 import com.example.phoenixmobile.model.HardWareReport
 import com.example.phoenixmobile.model.NetworkReport
 import com.example.phoenixmobile.model.Report
+import com.example.phoenixmobile.model.ReportAnswer
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -58,6 +59,7 @@ object Repository {
     private val loadError = MutableLiveData<String?>()
     private val loading = MutableLiveData<Boolean>()
 
+    //handler for server
     val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
     }
@@ -68,11 +70,13 @@ object Repository {
         reportDone.postValue(REPORT_NULL)
         audioTest.postValue(AUDIO_CHECK_NULL)
         hardWareReport.postValue(HardWareReport())
+
+        //checking state of report
         testList.observeForever { data ->
             if (data != null) {
-                if (!data.values.contains(REPORT_NULL) && (data.values.contains(AUDIO_CHECK_DONE) || data.values.contains(
-                        REPORT_ERROR
-                    ))
+                // If all the data is filled in correctly or there are errors
+                if (!data.values.contains(REPORT_NULL) && (data.values.contains(AUDIO_CHECK_DONE) ||
+                            data.values.contains(REPORT_ERROR))
                 ) {
                     setUpReportToSend()
                 }
@@ -82,10 +86,20 @@ object Repository {
         loading.value = false
     }
 
+    // getters
+    fun getBluetoothFlag() = bluetoothFlag
+    fun getTestList() = testList
+    fun getAudioTest() = audioTest
+    fun getReportState() = reportDone
+
+    fun getReportToText() = reportText
+
+
     fun setDeviceId(value: String) {
         deviceId = value
     }
 
+    // if report process start
     fun setReportStarted() {
         reportDone.postValue(REPORT_STARTED)
     }
@@ -98,8 +112,7 @@ object Repository {
         bluetoothFlag.postValue(true)
     }
 
-    fun getBluetoothFlag() = bluetoothFlag
-
+    // reloadTest in start app
     private fun loadingTest() {
         loading.value = true
         job = CoroutineScope(Dispatchers.IO).launch {
@@ -112,6 +125,7 @@ object Repository {
     }
 
     private fun setUpReportToSend() {
+        // Preparing data to be sent to the server from display to the user
         reportDone.value = REPORT_DONE
         report.value = Report(
             deviceId,
@@ -134,6 +148,7 @@ object Repository {
     }
 
     private fun setUpTest() {
+        // Updating data for a new test
         testList.value = TreeMap(
             mapOf(
                 Pair("CPU", REPORT_NULL),
@@ -227,14 +242,8 @@ object Repository {
 
     fun setReportTimeExpired() {
         reportDone.postValue(REPORT_ERROR)
-        reportText.postValue(TreeMap(mapOf(Pair("", "Error while receiving report!"))))
+        setUpReportToSend()
     }
-
-    fun getTestList() = testList
-    fun getAudioTest() = audioTest
-    fun getReportState() = reportDone
-
-    fun getReportToText() = reportText
 
     fun setAudioResponse(state: Int) {
         testList.value?.set(
@@ -245,18 +254,31 @@ object Repository {
         testList.postValue(testList.value)
     }
 
+    fun setOSReport(report: String) {
+        aboutdeviceText = report
+    }
+
+
+    // working with databases
     fun insertPriceTable(priceItem: PriceDto) {
         priceDao.insertModel(priceItem)
     }
 
     fun loadPriceTable() {
         job = CoroutineScope(Dispatchers.Main).launch {
+            //TODO: get data from server
             priceList.postValue(priceDao.getAll())
         }
     }
 
     fun getPriceList() = priceList
-    fun setOSReport(report: String) {
-        aboutdeviceText = report
+
+    // working with server (sandbox)
+
+    fun getReportAnswer(): ReportAnswer {
+        //TODO: get data from server
+        return ReportAnswer("Apple", "iPhone 11", "Good", 600f, 1204895578)
     }
+
+
 }

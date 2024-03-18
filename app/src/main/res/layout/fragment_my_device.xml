@@ -124,6 +124,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
+        android:enabled="false"
         android:id="@+id/btn_save_qr"
         style="@style/Widget.Material3.Button.UnelevatedButton"
         android:layout_width="match_parent"
