@@ -119,13 +119,13 @@
         android:text="Generate report"
         android:textAllCaps="true"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_save_qr"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:enabled="false"
-        android:id="@+id/btn_save_qr"
+        android:id="@+id/btn_save"
         style="@style/Widget.Material3.Button.UnelevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
         android:layout_marginVertical="24dp"
         android:paddingHorizontal="24dp"
         android:paddingVertical="8dp"
-        android:text="Save QR"
+        android:text="Save report"
         android:textAllCaps="true"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

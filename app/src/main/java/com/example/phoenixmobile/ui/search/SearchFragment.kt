@@ -49,14 +49,7 @@ class SearchFragment : Fragment() {
 
         adapter = PriceAdapter(listener, priceList)
         binding.deviceCondPriceList.adapter = adapter
-        /*binding.btnGetPrice.setOnClickListener {
-            Snackbar.make(
-                binding.root,
-                "Update price information...",
-                Snackbar.ANIMATION_MODE_SLIDE
-            )
-                .show()
-        }*/
+
 
         viewModel.getPriceList().observe(viewLifecycleOwner) { data ->
             priceList = data
@@ -64,6 +57,8 @@ class SearchFragment : Fragment() {
             adapter.updateList(priceList)
         }
 
+
+        // filters for searching by models
         binding.productName.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 nameFilter = s.toString()
@@ -89,6 +84,8 @@ class SearchFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {
             }
         })
+
+
         return root
     }
 

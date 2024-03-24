@@ -43,6 +43,9 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     @SuppressLint("ResourceType")
     private fun loadGraphicsList() {
         //TODO: get data from server
+
+        /* test */
+        // parse sample file
         GlobalScope.launch(Dispatchers.IO) {
             val inputStreamReader = InputStreamReader(
                 getApplication<Application>().resources.openRawResource(
@@ -53,12 +56,17 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             val gson = Gson()
             graphic.postValue(gson.fromJson(jsonInput, Graphic::class.java))
         }
+        /* test */
         convertPriceList()
     }
 
     @SuppressLint("ResourceType")
     private fun loadPriceList() {
         //TODO: get data from server
+
+
+        /* test */
+        // parse sample file
         GlobalScope.launch(Dispatchers.IO) {
             val inputStreamReader = InputStreamReader(
                 getApplication<Application>().resources.openRawResource(
@@ -84,6 +92,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             }
             Repository.loadPriceTable()
         }
+        /* test */
         convertPriceList()
     }
 }

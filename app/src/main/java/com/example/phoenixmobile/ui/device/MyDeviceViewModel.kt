@@ -2,8 +2,12 @@ package com.example.phoenixmobile.ui.device
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.app.DownloadManager
+import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -31,23 +35,50 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
         loadNames()
     }
 
+    fun startCheck() {
+        Repository.setReportStarted()
+        // setup time to generate report
+        viewModelScope.launch {
+            timerFlow(TIMEOUT_DURATION).collect { time ->
+                // if time expired
+                if (time == 0L) {
+                    this.cancel()
+                    Repository.setReportTimeExpired()
+                    Log.d("TIMER", "Stopped auto")
+                } else if (Repository.getReportState().value == Repository.REPORT_DONE) {
+                    // if the report is generated before the end of the timer
+                    this.cancel()
+                    Log.d("TIMER", "Stopped with done")
+                }
+            }
+        }
+        viewModelScope.launch {
+            // we stop the services if the report is ready
+            reportState.asFlow().collect {
+                if (it == Repository.REPORT_DONE || it == Repository.REPORT_ERROR) {
+                    Log.d("VW", "Stop service")
+                }
+            }
+        }
+    }
+
     fun getDeviceName(): String? {
         val phoneModel = Build.MODEL
+        // checking for strange names
         return if (samsungNames.contains(phoneModel)) {
             samsungNames[phoneModel]
         } else
             phoneModel
     }
-
-    fun setDisplayCheck(screenWidth: Int, screenHeight: Int, density: Float) {
-        Repository.setDisplayReport(screenWidth, screenHeight, density)
-    }
-
     fun getTest() = testList
     fun audioTest() = audioTestState
     fun reportState() = reportState
     fun report() = reportText
     fun bluetoothConnect() = bluetoothConnect
+
+    fun setDisplayCheck(screenWidth: Int, screenHeight: Int, density: Float) {
+        Repository.setDisplayReport(screenWidth, screenHeight, density)
+    }
 
     fun setAudioReply(reply: Boolean) {
         if (reply)
@@ -64,6 +95,7 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
     private fun loadNames() {
         val inputStreamReader = InputStreamReader(
             getApplication<Application>().resources.openRawResource(
+                // samsung name file, local storage
                 R.raw.samsung_names
             )
         )
@@ -73,6 +105,17 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun downloadFile(){
+        // download the report using the link from the server response
+        val url = Repository.getReportPdf().value
+        var download= getApplication<Application>().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        var PdfUri = Uri.parse(url)
+        var getPdf = DownloadManager.Request(PdfUri)
+        getPdf.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        download.enqueue(getPdf)
+        Toast.makeText(getApplication<Application>().applicationContext,"Download Started", Toast.LENGTH_LONG).show()
+    }
+
     fun timerFlow(duration: Long): Flow<Long> = flow {
         for (i in duration downTo 0) {
             emit(i)
@@ -80,33 +123,4 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun getReportPrice(): Float {
-        val answ = Repository.getReportAnswer()
-        return answ.price
-    }
-
-    fun startCheck() {
-        Repository.setReportStarted()
-        // setup time to generate report
-        viewModelScope.launch {
-            timerFlow(TIMEOUT_DURATION).collect { time ->
-                if (time == 0L) {
-                    this.cancel()
-                    Repository.setReportTimeExpired()
-                    Log.d("TIMER", "Stopped auto")
-                } else if (Repository.getReportState().value == Repository.REPORT_DONE) {
-                    this.cancel()
-                    Log.d("TIMER", "Stopped with done")
-                }
-            //println(time)
-            }
-        }
-        viewModelScope.launch {
-            reportState.asFlow().collect {
-                if (it == Repository.REPORT_DONE || it == Repository.REPORT_ERROR) {
-                    Log.d("VW", "Stop service")
-                }
-            }
-        }
-    }
 }

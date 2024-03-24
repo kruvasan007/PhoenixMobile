@@ -48,12 +48,13 @@ class HardWareTest : Service(), SensorEventListener {
     private val NS2S = 1.0f / 1000000000.0f
     private var timestamp: Float = 0f
 
-    fun checkBattery() {
-
+    private fun checkBattery() {
         val receiver: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 batteryStatus = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
-                batteryCycleCount = intent.getIntExtra(BatteryManager.EXTRA_CYCLE_COUNT, -1)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    batteryCycleCount = intent.getIntExtra(BatteryManager.EXTRA_CYCLE_COUNT, -1)
+                }
                 Log.d("BATTERY", getStringStatus(batteryStatus) + " " + batteryCycleCount)
                 application.unregisterReceiver(this)
                 Repository.setBatteryReport(batteryStatus)

@@ -9,7 +9,6 @@ import com.example.phoenixmobile.model.DisplayReport
 import com.example.phoenixmobile.model.HardWareReport
 import com.example.phoenixmobile.model.NetworkReport
 import com.example.phoenixmobile.model.Report
-import com.example.phoenixmobile.model.ReportAnswer
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -39,6 +38,8 @@ object Repository {
     private val hardWareReport = MutableLiveData<HardWareReport>()
     private val displayReport = MutableLiveData<DisplayReport>()
     private val networkReport = MutableLiveData<NetworkReport>()
+
+    private val reportUrl = MutableLiveData<String>()
 
     private val REPORT_NULL = 0
     val REPORT_STARTED = 1
@@ -138,14 +139,13 @@ object Repository {
         )
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jObject = JSONObject(gsonPretty.toJson(report.value))
-        val reportMap = TreeMap<String, String>()
-        for (testName in jObject.keys()) {
-            println(jObject.getString(testName) + "\n")
-            reportMap[testName] = jObject.getString(testName)
-        }
-        reportText.postValue(reportMap)
+
+        // TODO: send report to server
+        sendReportToServer()
+
         setUpTest()
     }
+
 
     private fun setUpTest() {
         // Updating data for a new test
@@ -167,7 +167,9 @@ object Repository {
     }
 
     fun setCPUReport(frequency: String, mark: String) {
-        testList.value?.set("CPU", REPORT_DONE)
+        if (frequency != "") {
+            testList.value?.set("CPU", REPORT_DONE)
+        }
         testList.postValue(testList.value)
 
         val report = CPUReport(frequency, mark)
@@ -203,7 +205,10 @@ object Repository {
     }
 
     fun setMemoryReport(ram: Long, total: Long, aval: Long) {
-        testList.value?.set("Memory", REPORT_DONE)
+        if (ram > 0 && total > 0 && aval > 0)
+            testList.value?.set("Memory", REPORT_DONE)
+        else
+            testList.value?.set("Memory", REPORT_ERROR)
         testList.postValue(testList.value)
 
         hardWareReport.value?.ram = ram
@@ -225,7 +230,10 @@ object Repository {
     }
 
     fun setGyroscopeReport(gyroState: Boolean) {
-        testList.value?.set("Gyroscope", REPORT_DONE)
+        if (gyroState)
+            testList.value?.set("Gyroscope", REPORT_DONE)
+        else
+            testList.value?.set("Gyroscope", REPORT_ERROR)
         testList.postValue(testList.value)
 
         hardWareReport.value?.gyroscope = gyroState.toString()
@@ -273,12 +281,27 @@ object Repository {
 
     fun getPriceList() = priceList
 
-    // working with server (sandbox)
+    fun getReportPdf() = reportUrl
 
-    fun getReportAnswer(): ReportAnswer {
-        //TODO: get data from server
-        return ReportAnswer("Apple", "iPhone 11", "Good", 600f, 1204895578)
+    // working with server (sandbox)
+    private fun sendReportToServer() {
+        // TODO GET ANSWER FROM SERVER
+
+        /* test */
+        val reportMap = TreeMap<String, String>()
+        reportMap["Condition"] = "Good"
+        reportMap["Price"] = "400"
+        getReportPdfFromServer() // for test
+        reportMap["Report"] =
+            "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1LLTcuQEmHSLTQ6HY9vKfW2VNqDe8t232"
+        /* test */
+
+        //TODO: get data from server like ReportAnwer =
+        reportText.postValue(reportMap)
     }
 
+    private fun getReportPdfFromServer() {
+        reportUrl.postValue("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1LLTcuQEmHSLTQ6HY9vKfW2VNqDe8t232")
+    }
 
 }

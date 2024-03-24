@@ -5,5 +5,6 @@ data class ReportAnswer (
     var model : String,
     var condition : String,
     var price : Float,
+    var url : String,
     var report_id : Long,
 )

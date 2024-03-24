@@ -2,14 +2,12 @@ package com.example.phoenixmobile.ui.device
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -26,10 +24,6 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
-import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.util.TreeMap
 
 
@@ -107,13 +101,28 @@ class MyDeviceFragment : Fragment() {
 
 
         binding.btnGenReport.setOnClickListener {
-            startGenerateReport()
+            // create info dialog
+            myDialog = MaterialAlertDialogBuilder(
+                requireContext(),
+                com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
+            )
+                .setMessage(getString(R.string.startMsg))
+                .setPositiveButton("Let's go!") { dialog, which ->
+                    startGenerateReport()
+                }
+                .setCancelable(false)
+                .show()
         }
 
         // setUp all of observers
+
+        // chips about report generate process
         fragmentTextUpdateObserver()
+        // audio test done or not
         fragmentAudioTestRequestObserver()
+        // listener end of the report
         fragmentReportStateUpdateObserver()
+        // print test report from server
         fragmentTextReportDoneObserver()
 
         checkBluetoothConnection()
@@ -130,8 +139,16 @@ class MyDeviceFragment : Fragment() {
                 .create().show()
         }
 
-        binding.btnSaveQr.setOnClickListener {
+        binding.btnSave.setOnClickListener {
+
+            // download report like pdf
+            viewModel.downloadFile()
+
+            /*
+            // get report text
             val text = reportList.toList().toString()
+
+            //print reprot like QR
             if (reportList.size != 0) {
                 val writer = MultiFormatWriter()
                 try {
@@ -143,7 +160,7 @@ class MyDeviceFragment : Fragment() {
                 } catch (e: WriterException) {
                     e.printStackTrace()
                 }
-            }
+            }*/
         }
 
     }
@@ -152,8 +169,8 @@ class MyDeviceFragment : Fragment() {
         viewModel.report().observe(viewLifecycleOwner) { data ->
             binding.reportList.visibility = View.VISIBLE
             reportList = data
+
             //TODO: CHANGE TO WAIT SERVER RESPONSE
-            reportList["PRICE"] = viewModel.getReportPrice().toString()
             adapterReportText.updateList(reportList)
         }
     }
@@ -164,7 +181,7 @@ class MyDeviceFragment : Fragment() {
                 binding.testList.visibility = View.INVISIBLE
                 binding.progressBar.isIndeterminate = false
                 binding.btnGenReport.isEnabled = true
-                binding.btnSaveQr.isEnabled = true
+                binding.btnSave.isEnabled = true
                 binding.reportCardView.visibility = View.VISIBLE
             }
         }
@@ -187,7 +204,7 @@ class MyDeviceFragment : Fragment() {
     private fun startGenerateReport() {
         binding.reportCardView.visibility = View.INVISIBLE
         binding.btnGenReport.isEnabled = false
-        binding.btnSaveQr.isEnabled = false
+        binding.btnSave.isEnabled = false
         binding.progressBar.isIndeterminate = true
         binding.testList.visibility = View.VISIBLE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
@@ -285,19 +302,19 @@ class MyDeviceFragment : Fragment() {
         viewModel.setDisplayCheck(screenWidth, screenHeight, density)
     }
 
-    private fun createQrPopup(bitmap: Bitmap) {
+    /*private fun createQrPopup(bitmap: Bitmap) {
         val alertadd = AlertDialog.Builder(requireContext())
         val factory = LayoutInflater.from(requireContext())
-        val view: View = factory.inflate(com.example.phoenixmobile.R.layout.qr_popup, null)
+        val view: View = factory.inflate(R.layout.qr_popup, null)
         alertadd.setView(view)
-        val imageView: ImageView = view.findViewById(com.example.phoenixmobile.R.id.qr_code)
+        val imageView: ImageView = view.findViewById(R.id.qr_code)
         imageView.setImageBitmap(bitmap)
         alertadd.setNeutralButton(
             "Ok"
         ) { dlg, sumthin -> dlg.cancel() }
 
         alertadd.show()
-    }
+    }*/
 
 
     override fun onDestroyView() {

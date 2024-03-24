@@ -7,4 +7,5 @@
     <string name="brand_name">Brand</string>
     <string name="faq">FAQ</string>
     <string name="FAQ_descr">The app to report about the state of a device is a valuable tool designed to help users easily track and monitor the performance and condition of their electronic devices. This app allows individuals to input information about their devices, such as smartphones or tablets and getting feedback on their functionality, battery life, speed, and overall condition.\n</string>
+    <string name="startMsg">You will now be asked to test your device. Please turn off the headset and make sure that the phone is online, Bluetooth is on. During the audio test, listen to the recording and indicate whether the recording is correct</string>
 </resources>
