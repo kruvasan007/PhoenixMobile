@@ -21,8 +21,11 @@ import java.lang.reflect.Method
 
 
 class AudioTest : Service() {
+    // to record audio from the speaker
     private var mediaRecorder: MediaRecorder? = null
+    // the name of the temporary file where the sound from the speaker will be recorded
     private var fileName: String = ""
+    // recording status
     private var isRecording = false
     // the player of the recording
     private var mediaPlayer: MediaPlayer? = null
@@ -30,6 +33,7 @@ class AudioTest : Service() {
     private var mediaPlayerSource: MediaPlayer? = null
 
     private fun isConnected(device: BluetoothDevice): Boolean {
+        // checking if there are headphones connected
         return try {
             val m: Method = device.javaClass.getMethod("isConnected")
             m.invoke(device) as Boolean
@@ -48,7 +52,6 @@ class AudioTest : Service() {
     fun startMediaRecorder() {
         try {
             releaseRecorder()
-
             //create out file "temp.wav" in internal storage
             val outFile = File(
                 applicationContext.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
@@ -70,9 +73,12 @@ class AudioTest : Service() {
                 }
             } else {
                 mediaRecorder = MediaRecorder().apply {
+                    // where to write sound from
                     setAudioSource(MediaRecorder.AudioSource.MIC)
+                    // recording formats
                     setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
                     setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                    // which file should I write to
                     setOutputFile(fileName)
                     isRecording = true
                     start()
@@ -99,6 +105,7 @@ class AudioTest : Service() {
 
     fun createMediaPlayerSource() {
         try {
+            // the place of recording in the internal memory of the device
             val uri = Uri.parse("android.resource://$packageName/raw/sound")
             mediaPlayerSource = MediaPlayer().apply {
                 setDataSource(applicationContext, uri)
@@ -123,8 +130,8 @@ class AudioTest : Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
         createMediaPlayerSource()
+
         Repository.getReportState().observeForever {
             // check the current recording status - is it at the recording stage
             if (it == Repository.REPORT_STARTED && !isRecording) {
@@ -146,6 +153,7 @@ class AudioTest : Service() {
                 android.Manifest.permission.BLUETOOTH_CONNECT
             ) == android.content.pm.PackageManager.PERMISSION_GRANTED
         ) {
+            // checking all devices to see if they are connected
             for (device in mBluetoothAdapter.bondedDevices) {
                 if (isConnected((device))) {
                     checkBluetoothConnected = true
@@ -154,6 +162,7 @@ class AudioTest : Service() {
                 }
             }
         }
+        // if there is a connected device, we inform the controller
         if (checkBluetoothConnected)
             Repository.setBluetoothConnected()
         else
@@ -169,7 +178,6 @@ class AudioTest : Service() {
     }
 
     private fun runTest() {
-
         // we get the record
         val dir =
             File(
@@ -189,6 +197,7 @@ class AudioTest : Service() {
         // timer for sample playback and recording
         object : CountDownTimer(4000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                // start playback with some delay
                 if (millisUntilFinished > 3500L) {
                     mediaPlayerSource?.start()
                     startMediaRecorder()
@@ -196,6 +205,7 @@ class AudioTest : Service() {
             }
 
             override fun onFinish() {
+                // stop recording at the end of the timer
                 mediaPlayerSource?.pause()
                 Repository.setAudioResponse(Repository.AUDIO_DONE_PLAY)
                 startTimerToPlayRecord()
@@ -213,7 +223,7 @@ class AudioTest : Service() {
                     mediaPlayer?.start()
                 }
             }
-
+            // stopping the playback of recorded audio from the speaker
             override fun onFinish() {
                 isRecording = false
                 mediaPlayer?.stop()

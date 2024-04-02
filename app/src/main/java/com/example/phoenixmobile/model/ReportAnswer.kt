@@ -1,6 +1,7 @@
 package com.example.phoenixmobile.model
 
 data class ReportAnswer (
+    // data model to receive from the server
     var mark : String,
     var model : String,
     var condition : String,

@@ -19,9 +19,11 @@ import com.example.phoenixmobile.data.Repository
 
 
 class NetworkTest : Service() {
+    // the level of the available network
     private var level: Int = -1
     private var simState: Int = -1
     private var dataState: Int = -1
+    // is the phone currently connected to the network
     private var connected = false
     private var mGPS = false
 

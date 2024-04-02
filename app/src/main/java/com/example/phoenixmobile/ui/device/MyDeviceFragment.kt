@@ -87,6 +87,7 @@ class MyDeviceFragment : Fragment() {
             REQUEST_PERMISSIONS
         )
 
+        // we request additional rights, if the OS version allows
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -177,6 +178,7 @@ class MyDeviceFragment : Fragment() {
 
     private fun fragmentReportStateUpdateObserver() {
         viewModel.reportState().observe(viewLifecycleOwner) {
+            //if the test is completed, display the result
             if (it == Repository.REPORT_DONE || it == Repository.REPORT_ERROR) {
                 binding.testList.visibility = View.INVISIBLE
                 binding.progressBar.isIndeterminate = false
@@ -189,6 +191,7 @@ class MyDeviceFragment : Fragment() {
 
     private fun checkBluetoothConnection() {
         viewModel.bluetoothConnect().observe(viewLifecycleOwner) { bluetoothFlag ->
+            // If Bluetooth devices are connected and an audio test is running, display a notification
             if (!bluetoothFlag && Repository.getAudioTest().value == Repository.AUDIO_CHECK_STARTED) {
                 Snackbar.make(
                     binding.root,

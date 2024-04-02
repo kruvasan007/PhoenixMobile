@@ -13,7 +13,7 @@ import java.util.TreeMap
 class LoadingAdapter(private var testList: TreeMap<String, Int>) :
     RecyclerView.Adapter<LoadingAdapter.MyViewHolder>() {
 
-        // This adapter is designed to display the current report collection process
+        // This adapter is designed to display the current report collection process //
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val inflatedView: View = layoutInflater.inflate(R.layout.check_item, parent, false)
@@ -22,6 +22,7 @@ class LoadingAdapter(private var testList: TreeMap<String, Int>) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(list: TreeMap<String, Int>) {
+        // updating the status of the tests according to which we paint the chips element
         testList = list
         notifyDataSetChanged()
     }

@@ -1,6 +1,5 @@
 package com.example.phoenixmobile.ui.device
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.app.DownloadManager
 import android.content.Context
@@ -11,14 +10,13 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import com.example.phoenixmobile.R
 import com.example.phoenixmobile.data.Repository
+import com.jaredrummler.android.device.DeviceName
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import java.io.InputStreamReader
 import java.util.TreeMap
 
 
@@ -30,10 +28,6 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
     private var reportText = Repository.getReportToText()
     private var bluetoothConnect = Repository.getBluetoothFlag()
     private val samsungNames = TreeMap<String, String>()
-
-    init {
-        loadNames()
-    }
 
     fun startCheck() {
         Repository.setReportStarted()
@@ -63,13 +57,9 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun getDeviceName(): String? {
-        val phoneModel = Build.MODEL
-        // checking for strange names
-        return if (samsungNames.contains(phoneModel)) {
-            samsungNames[phoneModel]
-        } else
-            phoneModel
+        return DeviceName.getDeviceName(Build.MODEL, Build.MODEL)
     }
+
     fun getTest() = testList
     fun audioTest() = audioTestState
     fun reportState() = reportState
@@ -91,29 +81,21 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
         Repository.setBluetoothDisconnected()
     }
 
-    @SuppressLint("ResourceType")
-    private fun loadNames() {
-        val inputStreamReader = InputStreamReader(
-            getApplication<Application>().resources.openRawResource(
-                // samsung name file, local storage
-                R.raw.samsung_names
-            )
-        )
-        for (lines in inputStreamReader.readLines()) {
-            val line = lines.split(",")
-            samsungNames[line[0]] = line[1]
-        }
-    }
 
-    fun downloadFile(){
+    fun downloadFile() {
         // download the report using the link from the server response
         val url = Repository.getReportPdf().value
-        var download= getApplication<Application>().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        var PdfUri = Uri.parse(url)
-        var getPdf = DownloadManager.Request(PdfUri)
+        val download =
+            getApplication<Application>().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val PdfUri: Uri = Uri.parse(url)
+        val getPdf = DownloadManager.Request(PdfUri)
         getPdf.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         download.enqueue(getPdf)
-        Toast.makeText(getApplication<Application>().applicationContext,"Download Started", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            getApplication<Application>().applicationContext,
+            "Download Started",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     fun timerFlow(duration: Long): Flow<Long> = flow {

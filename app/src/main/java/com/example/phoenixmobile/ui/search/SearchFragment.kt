@@ -47,10 +47,11 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchPageBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        //adapter of list of devices
         adapter = PriceAdapter(listener, priceList)
         binding.deviceCondPriceList.adapter = adapter
 
-
+        // getting all prices and conditions
         viewModel.getPriceList().observe(viewLifecycleOwner) { data ->
             priceList = data
             binding.progressBar.visibility = View.INVISIBLE

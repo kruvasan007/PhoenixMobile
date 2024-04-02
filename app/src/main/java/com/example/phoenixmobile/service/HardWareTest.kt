@@ -51,7 +51,9 @@ class HardWareTest : Service(), SensorEventListener {
     private fun checkBattery() {
         val receiver: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
+                // getting battery status data
                 batteryStatus = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
+                // if possible, check the number of battery charging cycles
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                     batteryCycleCount = intent.getIntExtra(BatteryManager.EXTRA_CYCLE_COUNT, -1)
                 }
@@ -106,6 +108,7 @@ class HardWareTest : Service(), SensorEventListener {
         }
     }
 
+    //listening to data changes from the gyroscope
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
             val dT = (event.timestamp - timestamp) * NS2S
@@ -139,6 +142,7 @@ class HardWareTest : Service(), SensorEventListener {
         val iAvailableBlocks = iStat.availableBlocksLong
         val iTotalBlocks = iStat.blockCountLong
 
+        // calculating the total space and free space
         avalSpace = iAvailableBlocks * iBlockSize / (1024 * 1024 * 1024)
         totalSpace = iTotalBlocks * iBlockSize / (1024 * 1024 * 1024)
 

@@ -4,6 +4,20 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 
+/*
+
+the server provides data for all models
+
+   {
+    "mark": "Apple",
+    "model": "iPhone 11",
+    "prices": {
+    "excellent": {}
+    "good": {}
+    "fair": {}
+    }
+
+ */
 @Dao
 interface PriceDao {
     //create all the necessary methods to access the database

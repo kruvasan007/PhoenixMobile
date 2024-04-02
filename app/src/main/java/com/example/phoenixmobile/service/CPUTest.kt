@@ -13,6 +13,8 @@ import java.security.NoSuchAlgorithmException
 
 class CPUTest : Service() {
     private lateinit var hashValue: String
+
+    /* start a block function with a cryptographic test for processor load */
     private fun computeSHAHash(password: String) {
         var mdSha1: MessageDigest? = null
         try {
@@ -69,6 +71,7 @@ class CPUTest : Service() {
         Log.d("CPU", frequency)
         Repository.setCPUReport(frequency, score)
     }
+    /* end a block function with a cryptographic test for processor load */
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Repository.getReportState().observeForever {

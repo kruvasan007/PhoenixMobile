@@ -21,24 +21,41 @@ import java.util.TreeMap
 
 
 object Repository {
+    /*
+        The repository contains all communication with the database,
+        connected services that work in the background
+     */
+    // list of running tests
     private val testList = MutableLiveData<TreeMap<String, Int>>()
+    // audio test status
     private val audioTest = MutableLiveData<Int>()
+    // the status of the overall test to complete the process
     private val reportDone = MutableLiveData<Int>()
+    // General information on the report
     private val report = MutableLiveData<Report>()
+    // presentation of the report in JSON text format, which we receive from the server
     private val reportText = MutableLiveData<TreeMap<String, String>>()
+    // device data: motherboard number, OS, IMEI, etc.
     private var aboutdeviceText: String = ""
+
     private var deviceId: String = ""
 
+
+    // bluetooth test response status
     private val bluetoothFlag = MutableLiveData<Boolean>()
 
+    // price data for each of the smartphone models presented in the summary from the server
     private val priceList = MutableLiveData<List<PriceDto>>()
+    // database management
     private val priceDao: PriceDao = App.getDatabase()!!.priceDao()
 
+    // data on tests that are run in separate services in the back
     private val CPUReport = MutableLiveData<CPUReport>()
     private val hardWareReport = MutableLiveData<HardWareReport>()
     private val displayReport = MutableLiveData<DisplayReport>()
     private val networkReport = MutableLiveData<NetworkReport>()
 
+    // link from the server to the finished pdf Report
     private val reportUrl = MutableLiveData<String>()
 
     private val REPORT_NULL = 0
@@ -55,7 +72,7 @@ object Repository {
     val AUDIO_DONE_PLAY = 5
     val AUDIO_CHECK_START_PLAYING = 6
 
-    //private val retrofitService = Common.retrofitService
+    //to work with the server via the REST API:   private val retrofitService = Common.retrofitService
     private var job: Job? = null
     private val loadError = MutableLiveData<String?>()
     private val loading = MutableLiveData<Boolean>()
@@ -66,6 +83,7 @@ object Repository {
     }
 
     init {
+        // data initialization
         loadingTest()
         bluetoothFlag.postValue(false)
         reportDone.postValue(REPORT_NULL)
@@ -170,6 +188,7 @@ object Repository {
         if (frequency != "") {
             testList.value?.set("CPU", REPORT_DONE)
         }
+        // if true, the test is considered completed
         testList.postValue(testList.value)
 
         val report = CPUReport(frequency, mark)
@@ -183,6 +202,7 @@ object Repository {
         GPS: Boolean,
         bluetooth: Boolean
     ) {
+        // checking the correctness of the values
         if (level != -1 && dataStatus != -1 && simState != -1) {
             testList.value?.set("Network", REPORT_DONE)
         } else {
@@ -198,6 +218,7 @@ object Repository {
         } else {
             testList.value?.set("GPS", REPORT_ERROR)
         }
+        // if true, the test is considered completed
         testList.postValue(testList.value)
 
         val report = NetworkReport(level, dataStatus, simState, GPS, bluetooth)
@@ -205,10 +226,12 @@ object Repository {
     }
 
     fun setMemoryReport(ram: Long, total: Long, aval: Long) {
+        // checking the correctness of the values
         if (ram > 0 && total > 0 && aval > 0)
             testList.value?.set("Memory", REPORT_DONE)
         else
             testList.value?.set("Memory", REPORT_ERROR)
+        // if true, the test is considered completed
         testList.postValue(testList.value)
 
         hardWareReport.value?.ram = ram
@@ -218,11 +241,13 @@ object Repository {
     }
 
     fun setDisplayReport(screenWidth: Int, screenHeight: Int, density: Float) {
+        // checking the correctness of the values
         if (screenHeight != -1 && screenWidth != -1) {
             testList.value?.set("Display", REPORT_DONE)
         } else {
             testList.value?.set("Display", REPORT_ERROR)
         }
+        // if true, the test is considered completed
         testList.postValue(testList.value)
 
         val report = DisplayReport(screenWidth, screenHeight, density)
@@ -230,10 +255,12 @@ object Repository {
     }
 
     fun setGyroscopeReport(gyroState: Boolean) {
+        // checking the correctness of the values
         if (gyroState)
             testList.value?.set("Gyroscope", REPORT_DONE)
         else
             testList.value?.set("Gyroscope", REPORT_ERROR)
+        // if true, the test is considered completed
         testList.postValue(testList.value)
 
         hardWareReport.value?.gyroscope = gyroState.toString()
@@ -242,6 +269,7 @@ object Repository {
 
     fun setBatteryReport(batteryStatus: Int) {
         testList.value?.set("Battery", REPORT_DONE)
+        // if true, the test is considered completed
         testList.postValue(testList.value)
 
         hardWareReport.value?.batteryState = batteryStatus
@@ -301,6 +329,7 @@ object Repository {
     }
 
     private fun getReportPdfFromServer() {
+        // test //
         reportUrl.postValue("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1LLTcuQEmHSLTQ6HY9vKfW2VNqDe8t232")
     }
 

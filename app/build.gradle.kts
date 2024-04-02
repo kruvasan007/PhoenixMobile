@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    //to translate strange names into convenient model names
+    implementation("com.jaredrummler:android-device-names:2.1.1")
     //for QR
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     //for graphics
