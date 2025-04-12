@@ -21,7 +21,12 @@ import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.phoenixmobile.data.Repository
+import com.example.phoenixmobile.data.DeviceInfoManager
+import com.example.phoenixmobile.data.ReportManager
+import com.example.phoenixmobile.data.ReportStatus
+import com.example.phoenixmobile.data.TestManager
+import com.example.phoenixmobile.util.SettingsManager.getDeviceName
+import com.jaredrummler.android.device.DeviceName
 import java.io.File
 import kotlin.math.sqrt
 
@@ -59,7 +64,7 @@ class HardWareTest : Service(), SensorEventListener {
                 }
                 Log.d("BATTERY", getStringStatus(batteryStatus) + " " + batteryCycleCount)
                 application.unregisterReceiver(this)
-                Repository.setBatteryReport(batteryStatus)
+                TestManager.setBatteryReport(batteryStatus)
             }
         }
         application.registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
@@ -95,7 +100,7 @@ class HardWareTest : Service(), SensorEventListener {
                 if (data.size > 2) {
                     if (data.max() > STEP_MAX_MAGNITUDE_GYRO) {
                         flagGyroscope = true
-                        Repository.setGyroscopeReport(flagGyroscope)
+                        TestManager.setGyroscopeReport(flagGyroscope)
                         Log.d("GYRO", "OK")
                     }
                 }
@@ -103,7 +108,7 @@ class HardWareTest : Service(), SensorEventListener {
             listen.observeForever(observer)
         } else {
             flagGyroscope = false
-            Repository.setGyroscopeReport(flagGyroscope)
+            TestManager.setGyroscopeReport(flagGyroscope)
             Log.d("GYRO", "No gyroscope")
         }
     }
@@ -148,7 +153,7 @@ class HardWareTest : Service(), SensorEventListener {
 
         Log.d("MEMORY", "$totalRam GB $totalSpace TOTAL $avalSpace AVAILABLE \n\n")
 
-        Repository.setMemoryReport(totalRam, totalSpace, avalSpace)
+        TestManager.setMemoryReport(totalRam, totalSpace, avalSpace)
     }
 
     @SuppressLint("HardwareIds")
@@ -165,12 +170,12 @@ class HardWareTest : Service(), SensorEventListener {
         val hardware = Build.HARDWARE;
         val board = Build.BOARD;
 
-        Repository.setOSReport(
+        DeviceInfoManager.setOSReport(
             "versionOS:$versionOS; sdk:$sdkVersion; " +
                     "model:$phoneModel; hardware:$hardware; boardModel:$board; " +
                     "bootloader:$bootloader; display:$display; imei:$deviceId"
         )
-        Repository.setDeviceId(deviceId)
+        DeviceInfoManager.setDeviceId(getDeviceName())
 
         Log.d(
             "SYSTEM",
@@ -181,8 +186,8 @@ class HardWareTest : Service(), SensorEventListener {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Repository.getReportState().observeForever {
-            if (it == Repository.REPORT_STARTED) {
+        ReportManager.reportStatus.observeForever {
+            if (it == ReportStatus.STARTED) {
                 flagGyroscope = false
                 checkBattery()
                 checkOS()

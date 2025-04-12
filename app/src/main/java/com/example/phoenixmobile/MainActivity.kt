@@ -12,6 +12,7 @@ import com.example.phoenixmobile.service.AudioTest
 import com.example.phoenixmobile.service.CPUTest
 import com.example.phoenixmobile.service.HardWareTest
 import com.example.phoenixmobile.service.NetworkTest
+import com.example.phoenixmobile.util.SettingsManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        SettingsManager.initialize(applicationContext)
         startService(Intent(this, HardWareTest::class.java))
         startService(Intent(this, NetworkTest::class.java))
         startService(Intent(this, CPUTest::class.java))

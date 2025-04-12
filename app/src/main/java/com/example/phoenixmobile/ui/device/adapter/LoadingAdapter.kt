@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.phoenixmobile.R
-import com.example.phoenixmobile.data.Repository
+import com.example.phoenixmobile.data.AudioStatus
+import com.example.phoenixmobile.data.ReportStatus
 import com.google.android.material.chip.Chip
 import java.util.TreeMap
 
@@ -42,8 +43,8 @@ class LoadingAdapter(private var testList: TreeMap<String, Int>) :
         fun bind(test: Pair<String, Int>) {
             // checking the status of this report item
             name.isChecked =
-                test.second == Repository.REPORT_DONE || test.second == Repository.AUDIO_CHECK_DONE
-            if (test.second == Repository.REPORT_ERROR)
+                test.second == ReportStatus.DONE.ordinal
+            if (test.second == AudioStatus.ERROR.ordinal)
                 name.setChipBackgroundColorResource(R.color.error_color)
         }
     }

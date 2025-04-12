@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Base64
 import android.util.Log
-import com.example.phoenixmobile.data.Repository
+import com.example.phoenixmobile.data.ReportManager
+import com.example.phoenixmobile.data.ReportStatus
+import com.example.phoenixmobile.data.TestManager
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.security.MessageDigest
@@ -69,13 +71,13 @@ class CPUTest : Service() {
             ex.printStackTrace()
         }
         Log.d("CPU", frequency)
-        Repository.setCPUReport(frequency, score)
+        TestManager.setCpuReport(frequency, score)
     }
     /* end a block function with a cryptographic test for processor load */
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Repository.getReportState().observeForever {
-            if (it == Repository.REPORT_STARTED) {
+        ReportManager.reportStatus.observeForever {
+            if (it == ReportStatus.STARTED) {
                 // This test loads the processing power of the processor and puts a
                 // relative score where a score of 6-8 is very good and the higher
                 // the value, the worse (for example, 26 is an old phone)

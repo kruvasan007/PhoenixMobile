@@ -1,8 +1,6 @@
 package com.example.phoenixmobile.service
 
 import android.app.Service
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
@@ -14,33 +12,29 @@ import android.os.Build
 import android.os.CountDownTimer
 import android.os.Environment
 import android.os.IBinder
-import android.util.Log
-import com.example.phoenixmobile.data.Repository
+import com.example.phoenixmobile.data.AudioStatus
+import com.example.phoenixmobile.data.ReportManager
+import com.example.phoenixmobile.data.ReportStatus
+import com.example.phoenixmobile.data.TestManager
+import com.example.phoenixmobile.utils.CheckBluetoothConnected
 import java.io.File
-import java.lang.reflect.Method
 
 
 class AudioTest : Service() {
     // to record audio from the speaker
     private var mediaRecorder: MediaRecorder? = null
+
     // the name of the temporary file where the sound from the speaker will be recorded
     private var fileName: String = ""
+
     // recording status
     private var isRecording = false
+
     // the player of the recording
     private var mediaPlayer: MediaPlayer? = null
+
     // the player of the source recording
     private var mediaPlayerSource: MediaPlayer? = null
-
-    private fun isConnected(device: BluetoothDevice): Boolean {
-        // checking if there are headphones connected
-        return try {
-            val m: Method = device.javaClass.getMethod("isConnected")
-            m.invoke(device) as Boolean
-        } catch (e: Exception) {
-            throw IllegalStateException(e)
-        }
-    }
 
     private fun releaseRecorder() {
         if (mediaRecorder != null) {
@@ -89,14 +83,7 @@ class AudioTest : Service() {
         }
     }
 
-    private fun releaseMediaPlayerRecords() {
-        if (mediaPlayer != null) {
-            mediaPlayer!!.release()
-            mediaPlayer = null
-        }
-    }
-
-    private fun releaseMediaPlayer() {
+    private fun resetPlayer() {
         if (mediaPlayerSource != null) {
             mediaPlayerSource!!.release()
             mediaPlayerSource = null
@@ -132,9 +119,9 @@ class AudioTest : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createMediaPlayerSource()
 
-        Repository.getReportState().observeForever {
+        ReportManager.reportStatus.observeForever {
             // check the current recording status - is it at the recording stage
-            if (it == Repository.REPORT_STARTED && !isRecording) {
+            if (it == ReportStatus.STARTED && !isRecording) {
                 startChecking()
             }
         }
@@ -143,37 +130,10 @@ class AudioTest : Service() {
     }
 
     private fun startChecking() {
-        Repository.setAudioResponse(Repository.AUDIO_CHECK_STARTED)
-
         // checking connected Bluetooth devices
-        var checkBluetoothConnected = false
-        val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if (androidx.core.app.ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.BLUETOOTH_CONNECT
-            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        ) {
-            // checking all devices to see if they are connected
-            for (device in mBluetoothAdapter.bondedDevices) {
-                if (isConnected((device))) {
-                    checkBluetoothConnected = true
-                    Log.d("AudioTest", "${device.name} - connected")
-                    break
-                }
-            }
-        }
-        // if there is a connected device, we inform the controller
-        if (checkBluetoothConnected)
-            Repository.setBluetoothConnected()
-        else
-            Repository.setBluetoothDisconnected()
-
-        // listener of the audio playback preparation state
-        Repository.getBluetoothFlag().observeForever {
-            if (it) {
-                Repository.setAudioResponse(Repository.AUDIO_CHECK_START_PLAYING)
-                runTest()
-            }
+        if (!CheckBluetoothConnected.checkBluetoothConnected(this)) {
+            // if there is a connected device, we inform the controller
+            runTest()
         }
     }
 
@@ -200,6 +160,7 @@ class AudioTest : Service() {
                 // start playback with some delay
                 if (millisUntilFinished > 3500L) {
                     mediaPlayerSource?.start()
+                    TestManager.setAudioReport(AudioStatus.STARTED)
                     startMediaRecorder()
                 }
             }
@@ -207,7 +168,7 @@ class AudioTest : Service() {
             override fun onFinish() {
                 // stop recording at the end of the timer
                 mediaPlayerSource?.pause()
-                Repository.setAudioResponse(Repository.AUDIO_DONE_PLAY)
+                TestManager.setAudioReport(AudioStatus.DONE_PLAY)
                 startTimerToPlayRecord()
             }
         }.start()
@@ -223,11 +184,12 @@ class AudioTest : Service() {
                     mediaPlayer?.start()
                 }
             }
+
             // stopping the playback of recorded audio from the speaker
             override fun onFinish() {
                 isRecording = false
+                TestManager.setAudioReport(AudioStatus.WAITING)
                 mediaPlayer?.stop()
-                Repository.setAudioResponse(Repository.AUDIO_WAIT_ANSWER)
             }
         }.start()
     }
@@ -237,9 +199,8 @@ class AudioTest : Service() {
     }
 
     override fun onDestroy() {
-        releaseMediaPlayer()
         releaseRecorder()
-        releaseMediaPlayerRecords()
+        resetPlayer()
         super.onDestroy()
     }
 }

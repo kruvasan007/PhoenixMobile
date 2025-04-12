@@ -3,7 +3,6 @@ package com.example.phoenixmobile.service
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Service
-import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,7 +14,9 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.phoenixmobile.data.Repository
+import com.example.phoenixmobile.data.ReportManager
+import com.example.phoenixmobile.data.ReportStatus
+import com.example.phoenixmobile.data.TestManager
 
 
 class NetworkTest : Service() {
@@ -26,18 +27,6 @@ class NetworkTest : Service() {
     // is the phone currently connected to the network
     private var connected = false
     private var mGPS = false
-
-    private fun checkConnected() {
-        val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if (androidx.core.app.ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.BLUETOOTH_CONNECT
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            if (mBluetoothAdapter.isEnabled) {
-                connected = true
-            }
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.R)
     private fun checkNetworkState() {
@@ -105,14 +94,13 @@ class NetworkTest : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Repository.getReportState().observeForever {
-            if (it == Repository.REPORT_STARTED) {
+        ReportManager.reportStatus.observeForever {
+            if (it == ReportStatus.STARTED) {
                 checkGpsStatus()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     checkNetworkState()
                 }
-                checkConnected()
-                Repository.setNetworkReport(level, dataState, simState, mGPS, connected)
+                TestManager.setNetworkReport(level, dataState, simState, mGPS)
             }
         }
         return super.onStartCommand(intent, flags, startId)

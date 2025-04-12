@@ -1,4 +1,4 @@
-package com.example.phoenixmobile.model
+package com.example.phoenixmobile.data.api_models
 
 data class ReportAnswer (
     // data model to receive from the server

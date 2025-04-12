@@ -5,7 +5,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.phoenixmobile.R
-import com.example.phoenixmobile.data.Repository
+import com.example.phoenixmobile.data.PriceRepository
 import com.example.phoenixmobile.database.PriceDto
 import com.example.phoenixmobile.model.Graphic
 import com.google.gson.Gson
@@ -18,7 +18,7 @@ import java.util.TreeMap
 
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
-    private val _priceList = Repository.getPriceList()
+    private val _priceList = PriceRepository.priceList
     private val priceTable = MutableLiveData<TreeMap<String, Double>>()
     private val graphic = MutableLiveData<Graphic>()
 
@@ -80,7 +80,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 val brandOBJECT = jObject.getJSONObject(brand)
                 for (item in brandOBJECT.keys()) {
                     priceMap["$brand;$item"] = brandOBJECT.get(item).toString().toDouble()
-                    Repository.insertPriceTable(
+                    PriceRepository.insert(
                         PriceDto(
                             id = null,
                             "$brand;$item",
@@ -90,7 +90,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                     id++
                 }
             }
-            Repository.loadPriceTable()
+            PriceRepository.loadPrices()
         }
         /* test */
         convertPriceList()

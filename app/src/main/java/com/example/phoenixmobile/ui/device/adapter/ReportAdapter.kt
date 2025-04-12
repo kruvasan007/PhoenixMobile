@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.phoenixmobile.R
 import java.util.TreeMap
 
-class ReportAdapter(private var reportList: TreeMap<String, String>) :
+class ReportAdapter(private var reportList: Map<String, String>) :
     RecyclerView.Adapter<ReportAdapter.MyViewHolder>() {
 
         // we display a list of data that the server has sent as a report
@@ -20,7 +20,7 @@ class ReportAdapter(private var reportList: TreeMap<String, String>) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateList(list: TreeMap<String, String>) {
+    fun updateList(list: Map<String, String>) {
         reportList = list
         notifyDataSetChanged()
     }
