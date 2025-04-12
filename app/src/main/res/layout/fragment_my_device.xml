@@ -7,6 +7,18 @@
     tools:context=".ui.device.MyDeviceFragment">
 
 
+    <ImageView
+        android:layout_width="450dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/much_1"
+        android:alpha="0.3"
+        android:layout_marginBottom="-20dp"
+        android:layout_marginRight="-200dp"
+
+        />
+
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -39,6 +51,7 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
+        app:indicatorColor="@color/purple_500"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="12dp"
@@ -107,11 +120,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="48dp"
         android:layout_marginVertical="8dp"
+        android:backgroundTint="@color/purple_700"
+        android:fontFamily="sans-serif-medium"
         android:paddingHorizontal="24dp"
         android:paddingVertical="8dp"
         android:text="Generate report"
         android:textAllCaps="true"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_save"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -127,8 +142,10 @@
         android:paddingHorizontal="24dp"
         android:paddingVertical="8dp"
         android:text="Save report"
+        android:fontFamily="sans-serif-medium"
+        android:backgroundTint="@color/purple_500"
         android:textAllCaps="true"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -140,11 +157,18 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/faq"
         android:src="@drawable/baseline_question_mark_24"
-        app:backgroundTint="@color/material_dynamic_primary99"
+        app:backgroundTint="@color/white"
         app:borderWidth="2dp"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/mush_17"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

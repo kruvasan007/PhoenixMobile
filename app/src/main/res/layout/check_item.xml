@@ -6,10 +6,12 @@
     android:orientation="horizontal">
 
     <com.google.android.material.chip.Chip
-        style="@style/Widget.MaterialComponents.Chip.Choice"
         android:id="@+id/chip"
         android:clickable="false"
+        app:chipBackgroundColor="@color/chip_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:checkedIconVisible="false"
+        android:checkable="true"
         android:text="Device"/>
 </LinearLayout>

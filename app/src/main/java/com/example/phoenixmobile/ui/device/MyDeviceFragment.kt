@@ -109,10 +109,10 @@ class MyDeviceFragment : Fragment() {
             // create info dialog
             myDialog = MaterialAlertDialogBuilder(
                 requireContext(),
-                com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
+                com.google.android.material.R.style.AlertDialog_AppCompat
             )
                 .setMessage(getString(R.string.startMsg))
-                .setPositiveButton("Let's go!") { dialog, which ->
+                .setPositiveButton("Let's go!") { _, _ ->
                     startGenerateReport()
                 }
                 .setCancelable(false)
@@ -235,13 +235,14 @@ class MyDeviceFragment : Fragment() {
             .show()
     }
 
+    @SuppressLint("PrivateResource")
     private fun showScreenDialog() {
         val screenOptions = ScreenCondition.entries.toTypedArray()
         val descriptions = screenOptions.map { it.description }.toTypedArray()
 
         MaterialAlertDialogBuilder(
             requireContext(),
-            com.google.android.material.R.style.Base_ThemeOverlay_Material3_Dialog
+            com.google.android.material.R.style.MaterialAlertDialog_Material3_Animation
         )
             .setTitle("Состояние экрана устройства")
             .setSingleChoiceItems(descriptions, -1) { dialog, which ->

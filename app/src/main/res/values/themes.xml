@@ -10,7 +10,40 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/purple_500</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="CustomAlertDialogTheme" parent="ThemeOverlay.Material3.Dialog">
+        <!-- Цвет фона диалога -->
+        <item name="android:background">@color/white</item>
+
+        <!-- Стили заголовка и текста -->
+        <item name="materialAlertDialogTitleTextStyle">@style/DialogTitleStyle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/DialogBodyStyle</item>
+
+        <!-- Стили кнопок -->
+        <item name="buttonBarPositiveButtonStyle">@style/DialogPositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogNegativeButton</item>
+    </style>
+
+    <!-- Заголовок -->
+    <style name="DialogTitleStyle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/purple_500</item>
+    </style>
+
+    <!-- Текст сообщения -->
+    <style name="DialogBodyStyle" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- Положительная кнопка -->
+    <style name="DialogPositiveButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/purple_500</item>
+    </style>
+
+    <!-- Отрицательная кнопка -->
+    <style name="DialogNegativeButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/gray_color</item>
     </style>
 </resources>

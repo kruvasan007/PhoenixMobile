@@ -1,17 +1,20 @@
 package com.example.phoenixmobile.model
 
 enum class BodyCondition(val description: String) {
-    NO_DAMAGE("Корпус без повреждений"),
-    SCRATCHES("Царапины на корпусе"),
-    DENTS("Вмятины"),
-    CHIPPED("Сколы"),
-    OTHER("Другое")
+    NO_DAMAGE("Без дефектов"),
+    SCRATCHES("Мелкие царапины"),
+    SCRATCH("Глубокие царапины"),
+    DENTS("Отслоение краски"),
+    CHIPPED("Сколы, трещины"),
+    CREW("Изгиб"),
+    VM("Вмятины")
 }
 
 enum class ScreenCondition(val description: String) {
-    NO_DAMAGE("Экран без повреждений"),
-    SCRATCHES("Царапины на экране"),
-    CRACKS("Трещины на экране"),
-    DEAD_PIXELS("Битые пиксели / пятна"),
-    OTHER("Другое")
+    NO_DAMAGE("Без дефектов"),
+    SCRATCH("1–2 мелкие царапины"),
+    SCRATCHES("Много мелких царапин"),
+    PIXELS("Полосы и битые пиксели"),
+    PANTS("Пятна, блики или выгорание"),
+    CHIPPED("Сколы, трещины"),
 }
