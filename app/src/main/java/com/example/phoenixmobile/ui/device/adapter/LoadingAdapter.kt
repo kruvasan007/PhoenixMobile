@@ -45,7 +45,7 @@ class LoadingAdapter(private var testList: TreeMap<String, Int>) :
             name.isChecked =
                 test.second == ReportStatus.DONE.ordinal
             if (test.second == AudioStatus.ERROR.ordinal)
-                name.setChipBackgroundColorResource(R.color.error_color)
+                name.setChipBackgroundColorResource(R.color.graph_edge_highlighted)
         }
     }
 

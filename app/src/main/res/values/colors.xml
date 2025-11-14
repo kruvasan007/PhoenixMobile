@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#D6EFFF</color>
-    <color name="error_color">#ff4e33</color>
-    <color name="gray_color">#A9A09E</color>
-    <color name="purple_500">#FED99B</color>
-    <color name="purple_700">#FE654F</color>
-    <color name="teal_200">#EEF8FF</color>
-    <color name="teal_700">#FED18C</color>
-    <color name="black">#2A2423</color>
-    <color name="white">#FEFEFF</color>
+    <!-- Основные цвета приложения -->
+    <color name="purple_200">#ffe37d</color>
+    <color name="purple_500">#ffa91f</color>
+    <color name="purple_700">#ffa114</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Цвета для сообщений чата -->
+    <color name="user_message_bg">#ffa91f</color>
+    <color name="user_message_text">#FFFFFFFF</color>
+    <color name="system_message_bg">#FFF5F5F5</color>
+    <color name="system_message_text">#FF333333</color>
+    <color name="message_time_text">#FF999999</color>
+
+    <!-- Цвета для графа знаний -->
+    <color name="graph_node_default">#FF4CAF50</color>
+    <color name="graph_node_selected">#FFFF9800</color>
+    <color name="graph_edge_default">#FF757575</color>
+    <color name="graph_edge_highlighted">#FFF44336</color>
+    <color name="graph_background">#FFFAFAFA</color>
+
+    <!-- Цвета для системного аватара -->
+    <color name="system_avatar_bg">#FFE3F2FD</color>
+    <color name="system_avatar_icon">#FF1976D2</color>
 </resources>
+

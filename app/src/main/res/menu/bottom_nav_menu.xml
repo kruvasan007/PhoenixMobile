@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/navigation_mydevice"
-        android:icon="@drawable/phone"
+        android:icon="@drawable/ic_device_24"
         android:title="@string/title_mydevice" />
 
     <item
-        android:id="@+id/navigation_search"
-        android:icon="@drawable/search"
-        android:title="@string/title_search" />
-
+        android:id="@+id/navigation_chat"
+        android:icon="@drawable/ic_chat_24"
+        android:title="@string/title_chat" />
 </menu>

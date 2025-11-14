@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -52,12 +53,16 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.5.0")
     implementation("com.google.code.gson:gson:2.10")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     //for database
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     //for design
     implementation("com.google.android.material:material:1.11.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("androidx.cardview:cardview:1.0.0")
+    //for markdown
+    implementation("io.noties.markwon:core:4.6.2")
     //standart implementation
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.core:core-ktx:1.12.0")

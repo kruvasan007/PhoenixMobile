@@ -1,5 +1,8 @@
 package com.example.phoenixmobile.data
 
+import android.content.Context
+import android.util.Log
+import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.phoenixmobile.data.api_models.ReportAnswer
@@ -66,7 +69,7 @@ internal object ReportManager {
         _networkReport.value = NetworkReport(level, data, sim, gps)
     }
 
-    fun setBlueToothReport(bt: Boolean){
+    fun setBlueToothReport(bt: Boolean) {
         val hw = _hardwareReport.value ?: HardWareReport()
         hw.bluetooth = bt
         _hardwareReport.value = hw
@@ -83,7 +86,7 @@ internal object ReportManager {
         val dsp = _displayReport.value
         val audio = _audioReport.value
 
-        return ReportRequest(
+        val request = ReportRequest(
             deviceId = DeviceInfoManager.deviceId.takeIf { it.isNotBlank() },
             screen = dsp?.screen,
             body = dsp?.body,
@@ -99,28 +102,48 @@ internal object ReportManager {
             level = net?.level,
             dataStatus = net?.dataStatus,
             gps = net?.GPS,
-            bluetooth = net?.bluetooth,
+            bluetooth = hw?.bluetooth,
             audioReport = audio?.testStatus,
             frequency = cpu?.frequency,
             mark = cpu?.mark,
         )
+        Log.d("REPORT_REQ", "Built ReportRequest: $request")
+        return request
     }
 
     fun setReportResult(answer: ReportAnswer?) {
+        Log.d("REPORT_RESP", "Raw response object: $answer")
         _reportText.value = if (answer != null) {
-            mapOf(
+            val map = mapOf(
                 "mark" to answer.mark,
                 "model" to answer.model,
                 "condition" to answer.condition,
                 "price" to answer.price.toString(),
                 "report_id" to answer.report_id.toString()
             )
+            Log.d("REPORT_RESP", "Parsed map: $map")
+            map
         } else {
+            Log.e("REPORT_RESP", "Answer is null, setting error map")
             mapOf("error" to "Empty response")
         }
     }
 
     fun setReportClear() {
         _reportStatus.postValue(ReportStatus.NULL)
+    }
+
+    // Проверяем, был ли когда-либо отправлен отчет
+    fun hasReportBeenSent(context: Context): Boolean {
+        return context.getSharedPreferences("report_prefs", Context.MODE_PRIVATE)
+            .getBoolean("report_sent", false)
+    }
+
+    // Сохраняем факт отправки отчета
+    fun markReportAsSent(context: Context) {
+        context.getSharedPreferences("report_prefs", Context.MODE_PRIVATE)
+            .edit {
+                putBoolean("report_sent", true)
+            }
     }
 }

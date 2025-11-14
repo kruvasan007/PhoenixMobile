@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Контейнер для сообщения пользователя (справа) -->
+    <LinearLayout
+        android:id="@+id/layoutUserMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardUserMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                app:cardBackgroundColor="@color/user_message_bg"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <TextView
+                    android:id="@+id/tvUserMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:maxWidth="280dp"
+                    android:textColor="@color/user_message_text"
+                    android:textSize="16sp"
+                    tools:text="Пользовательское сообщение" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvUserTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/message_time_text"
+                android:textSize="12sp"
+                tools:text="14:30" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Контейнер для сообщения системы (слева) -->
+    <LinearLayout
+        android:id="@+id/layoutSystemMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="64dp"
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSystemMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/system_message_bg"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <TextView
+                    android:id="@+id/tvSystemMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:maxWidth="280dp"
+                    android:textColor="@color/system_message_text"
+                    android:textSize="16sp"
+                    tools:text="Ответ системы" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvSystemTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/message_time_text"
+                android:textSize="12sp"
+                tools:text="14:31" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -4,7 +4,6 @@ import android.app.Application
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.*
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class MyDeviceViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val TIMEOUT_DURATION = 50L
+    private val TIMEOUT_DURATION = 15L
     private var timerJob: Job? = null
 
     private val testList = TestManager.testList
@@ -44,6 +43,7 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
 
     fun startCheck() {
         ReportManager.setReportInProgress()
+        Log.d("REPORT_FLOW", "Report status set to STARTED, beginning timer")
 
         Log.d("TIMER", "Timer start")
         timerJob = viewModelScope.launch {
@@ -66,9 +66,10 @@ class MyDeviceViewModel(application: Application) : AndroidViewModel(application
 
     private fun observeReportState() {
         viewModelScope.launch {
-            // we stop the services if the report is ready
-            reportState.asFlow().collect {
-                if (it == ReportStatus.DONE || it == ReportStatus.ERROR) {
+            reportState.asFlow().collect { status ->
+                Log.d("REPORT_FLOW", "Observed report status change: $status")
+                if (status == ReportStatus.DONE || status == ReportStatus.ERROR) {
+                    Log.d("REPORT_FLOW", "Terminal status reached ($status), triggering sendReport()")
                     ReportApi.sendReport()
                     TestManager.resetTests()
                     stopTimer()

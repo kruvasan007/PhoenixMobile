@@ -189,6 +189,11 @@ class MyDeviceFragment : Fragment() {
                 binding.btnGenReport.isEnabled = true
                 binding.btnSave.isEnabled = true
                 binding.reportCardView.visibility = View.VISIBLE
+
+                // Если отчет успешно завершен, сохраняем этот факт
+                if (it == ReportStatus.DONE) {
+                    ReportManager.markReportAsSent(requireContext())
+                }
             }
         }
     }

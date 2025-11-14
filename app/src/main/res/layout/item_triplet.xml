@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="#FFF8DC"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#D2691E"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/relation"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="4dp" />
+
+        <TextView
+            android:id="@+id/relation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF8C00"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:background="#FFE4B5"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            app:layout_constraintStart_toEndOf="@id/subject"
+            app:layout_constraintTop_toTopOf="@id/subject"
+            android:layout_marginEnd="4dp" />
+
+        <TextView
+            android:id="@+id/obj"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#8B4513"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/relation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/relation" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

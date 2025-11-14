@@ -44,6 +44,6 @@
 
     <!-- Отрицательная кнопка -->
     <style name="DialogNegativeButton" parent="Widget.Material3.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/gray_color</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>
